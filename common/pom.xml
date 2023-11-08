@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>simplan-common</artifactId>
+    <name>SimPlan - Common</name>
+    <parent>
+        <groupId>com.intuit.data.simplan.framework</groupId>
+        <artifactId>simplan-framework-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intuit.data.simplan.framework</groupId>
+            <artifactId>simplan-logging</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intuit.data.simplan.framework</groupId>
+            <artifactId>simplan-global</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intuit.data.simplan.framework</groupId>
+            <artifactId>simplan-parserdsl</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pureconfig</groupId>
+            <artifactId>pureconfig_${scala.minor.version}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-scala_${scala.minor.version}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.changvvb</groupId>
+            <artifactId>jackson-module-caseclass_2.12</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+    </dependencies>
+</project>

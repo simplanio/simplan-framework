@@ -1,0 +1,83 @@
+{
+  "index_patterns": [
+    "simplanopsmetrics-*"
+  ],
+  "mappings": {
+    "date_detection": false,
+    "dynamic_templates": [
+      {
+        "labels_keyword": {
+          "mapping": {"ignore_above": 1024, "type": "keyword"},
+          "match_mapping_type": "string",
+          "match": "labels.*"
+        }
+      },
+      {
+        "aggregation_double": {
+          "mapping": {"ignore_above": 1024, "type": "double"},
+          "match": "aggs.*"
+        }
+      }
+    ],
+    "properties": {
+      "@timestamp": {"type": "date"},
+      "metricVersion": {"type": "long"},
+      "labels": {"type": "object"},
+      "message": {"type": "text"},
+      "detailedMessage": {"type": "text"},
+      "aggs": {"properties" : {"recordsProcessed": {"type": "double"}}},
+      "tags": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+      "error": {
+        "properties": {
+          "message": {"type": "text"},
+          "stackTrace": {"type": "text"},
+          "cause": {"type": "text"},
+          "causeTrace": {"type": "text"},
+          "type": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 500}}}
+        }
+      },
+      "task": {
+        "properties": {
+          "name": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "index": {"type": "long"},
+          "operatorType": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "operator": { "type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}}
+        }
+      },
+      "process": {
+        "properties": {
+          "name": { "type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "duration": {"type": "long"},
+          "start": {"type": "date"},
+          "end": {"type": "date"},
+          "status": {"ignore_above": 300, "type": "keyword"}
+        }
+      },
+      "meta": {
+        "properties": {
+          "asset": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "opsOwner": {"ignore_above": 300, "type": "keyword"},
+          "businessOwner": {"ignore_above": 300, "type": "keyword"}
+        }
+      },
+      "context": {
+        "properties": {
+          "appName": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "parentName": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "environment": {"ignore_above": 100, "type": "keyword"},
+          "runId": {"ignore_above": 500, "type": "keyword"},
+          "subject": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "type": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "action": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}},
+          "level": {"ignore_above": 100, "type": "keyword"},
+          "source": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 1024}}}
+        }
+      },
+      "event": {
+        "properties": {
+          "operatorConfig": {"type": "text"}
+        }
+      }
+    }
+  }
+}

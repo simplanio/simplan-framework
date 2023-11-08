@@ -1,0 +1,28 @@
+artifactVersion: 0.3.1
+
+asset_id: 2525411083940755299
+asset_alias: Intuit.simplan.simplanframework
+
+mavenSettingsFileId: ibp-maven-settings-file
+artifactoryCredentialsId: artifactory-simplan-framework
+mavenImage: "maven:3.5.3-jdk-8"
+MAIN_BRANCH: "master"
+groupId: com.intuit.Simplan.simplan-framework
+artifactId: simplan-framework
+jacocoExecPattern: "target/*.exec"
+
+githubCredentialsId: "github-svc-sbseg-ci"
+orgRepo: Simplan/simplan-framework
+
+CODECOV_CREDENTIALS: ibp-codecov-token
+SONAR_HOST: https://pub-sonarqube-ibp-prod-us-west-2-app.prod1-ibp.a.intuit.com/
+GITHUB_API: https://github.intuit.com/api/v3/
+
+enableJiraTransition: false
+
+deploy_repo: github.intuit.com/Simplan/simplan-framework.git
+enableScorecardReadinessCheck: false
+environments:
+  prd:
+    namespace: simplan-framework
+

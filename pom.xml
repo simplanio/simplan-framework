@@ -1,0 +1,407 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.intuit.data.simplan.framework</groupId>
+    <artifactId>simplan-framework-parent</artifactId>
+    <version>${revision}</version>
+    <inceptionYear>2021</inceptionYear>
+    <packaging>pom</packaging>
+    <name>SimPlan Framework - Parent</name>
+    <organization>
+        <name>Intuit Inc</name>
+        <url>https://github.intuit.com/tabraham1/simplan-framework</url>
+    </organization>
+
+    <description>Simplan - Simple Execution Planner</description>
+
+    <modules>
+        <module>global</module>
+        <module>logging</module>
+        <module>common</module>
+        <module>parser-dsl</module>
+        <module>core</module>
+    </modules>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+
+        <scala.version>2.12.12</scala.version>
+        <scala.minor.version>2.12</scala.minor.version>
+        <scala-parser-combinators.version>1.1.2</scala-parser-combinators.version>
+
+        <aws-java-sdk.version>1.12.184</aws-java-sdk.version>
+
+        <slf4j.version>1.7.36</slf4j.version>
+
+        <pureconfig.version>0.9.0</pureconfig.version>
+
+        <jackson.version>2.13.2</jackson.version>
+        <jackson-module-caseclass.version>1.1.1</jackson-module-caseclass.version>
+        <json4s.version>3.7.0-M11</json4s.version>
+
+        <antlr4.version>4.7.1</antlr4.version>
+        <antlr4.plugin.version>4.7.1</antlr4.plugin.version>
+
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-io.version>2.8.0</commons-io.version>
+        <commons-text.version>1.9</commons-text.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <httpcomponents.version>4.5.12</httpcomponents.version>
+
+
+        <org.scalatest.version>3.0.4</org.scalatest.version>
+        <junit-version>4.13.1</junit-version>
+
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <jacoco.enabled>true</jacoco.enabled>
+        <jacoco.version>0.8.7</jacoco.version>
+        <releasedeployrepo>https://artifactory.a.intuit.com/artifactory/maven.Simplan.simplan-releases
+        </releasedeployrepo>
+        <snapshotdeployrepo>https://artifactory.a.intuit.com/artifactory/maven.Simplan.simplan-snapshots
+        </snapshotdeployrepo>
+        <central.repo>https://artifact.intuit.com/artifactory/maven-proxy</central.repo>
+        <encoding>UTF-8</encoding>
+        <scoverage.plugin.version>1.4.1</scoverage.plugin.version>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.minor.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_${scala.minor.version}</artifactId>
+                <version>${org.scalatest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit-version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.scopt</groupId>
+                <artifactId>scopt_${scala.minor.version}</artifactId>
+                <version>3.7.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json4s</groupId>
+                <artifactId>json4s-core_${scala.minor.version}</artifactId>
+                <version>${json4s.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.json4s</groupId>
+                <artifactId>json4s-jackson_${scala.minor.version}</artifactId>
+                <version>${json4s.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.changvvb</groupId>
+                <artifactId>jackson-module-caseclass_${scala.minor.version}</artifactId>
+                <version>${jackson-module-caseclass.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pureconfig</groupId>
+                <artifactId>pureconfig_${scala.minor.version}</artifactId>
+                <version>${pureconfig.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-scala_${scala.minor.version}</artifactId>
+                <version>${jackson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-library</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-bom</artifactId>
+                <version>${aws-java-sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central-mirror</id>
+            <name>Central Repo</name>
+            <url>${central.repo}</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <!-- Repositories to download remote dependencies -->
+    <repositories>
+        <repository>
+            <id>central-mirror</id>
+            <url>${central.repo}</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>upload-artifact</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>scm.dev.snap.repo</id>
+                    <name>SNAPSHOT REPO</name>
+                    <url>${snapshotdeployrepo}</url>
+                    <layout>default</layout>
+                </snapshotRepository>
+                <repository>
+                    <id>scm.int.rel.repo</id>
+                    <name>RELEASE REPO</name>
+                    <url>${releasedeployrepo}</url>
+                    <layout>default</layout>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>bom</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <scalaCompatVersion>${scala.minor.version}</scalaCompatVersion>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                    <args>
+                        <arg>-Xmacro-settings:materialize-derivations</arg>
+                    </args>
+                    <jvmArgs>
+                        <jvmArg>-Xms128m</jvmArg>
+                        <jvmArg>-Xmx1024m</jvmArg>
+                    </jvmArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <configuration>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <junitxml>.</junitxml>
+                    <filereports>WDF TestSuite.txt</filereports>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.scoverage</groupId>
+                <artifactId>scoverage-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <configuration>
+                                        <scalaVersion>${scala.version}</scalaVersion>
+                    <highlighting>true</highlighting>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scoverage</groupId>
+                <artifactId>scoverage-maven-plugin</artifactId>
+                <version>${scoverage.plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                            <!-- or <report>integration-report</report> -->
+                            <!-- or <report>report-only</report> -->
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

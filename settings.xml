@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <interactiveMode>false</interactiveMode>
+  <mirrors>
+         <mirror>
+             <id>central-mirror</id>
+             <url>${NEXUS_PROXY_URL}/content/groups/public</url>
+             <!-- same value as ${central.repo} from (jsk-internal-parent) POM -->
+             <mirrorOf>*</mirrorOf>
+         </mirror>
+     </mirrors>
+  <servers>
+    <server>
+      <id>scm.dev.snap.repo</id>
+      <username>${env.MAVEN_ARTIFACTORY_USERID}</username>
+      <password>${env.MAVEN_ARTIFACTORY_TOKEN}</password>
+    </server>
+    <server>
+      <id>scm.int.rel.repo</id>
+      <username>${env.MAVEN_ARTIFACTORY_USERID}</username>
+      <password>${env.MAVEN_ARTIFACTORY_TOKEN}</password>
+    </server>
+  </servers>
+</settings>

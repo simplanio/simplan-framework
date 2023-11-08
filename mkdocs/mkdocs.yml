@@ -1,0 +1,42 @@
+site_name: SimPlan - Simple Execution Planner
+repo_url: https://github.intuit.com/Simplan/simplan-framework
+nav:
+  - 'Overview': index.md
+  - 'Getting Started': GettingStarted.md
+  - 'Contribution Guide': ContributionGuide.md
+  - 'Simplan Implementation':
+    - 'Data Processing': 
+      - Overview: implementations/dataprocessing/data-processing.md
+      - Spark: implementations/dataprocessing/spark.md
+      - Flink: implementations/dataprocessing/flink.md
+      - Presto: implementations/dataprocessing/presto.md
+    - Orchestration:
+      - Overview: implementations/orchestration/orchestration.md
+    - Console: implementations/console.md
+    - Simplan Logging:
+        - 'Introduction': 'logging/Simplan Logging.md'
+        - 'Logging Fields':  'logging/Simplan Fields.md'
+    
+theme: # readthedocs
+  name: material
+  logo: img/SimplanLogo.png
+  favicon: img/favicon-96x96.png
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode

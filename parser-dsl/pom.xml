@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>simplan-parserdsl</artifactId>
+    <name>SimPlan - Parser</name>
+    <parent>
+        <groupId>com.intuit.data.simplan.framework</groupId>
+        <artifactId>simplan-framework-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intuit.data.simplan.framework</groupId>
+            <artifactId>simplan-logging</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-parser-combinators_${scala.minor.version}</artifactId>
+            <version>${scala-parser-combinators.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intuit.Simplan.simplan-data-tools</groupId>
+            <artifactId>simplan-data-tools</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.plugin.version}</version>
+                <configuration>
+                    <arguments>
+                        <argument>-visitor</argument>
+                    </arguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>antlr</id>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
