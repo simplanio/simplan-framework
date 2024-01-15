@@ -1,0 +1,61 @@
+site_name: Simplan
+repo_url: https://github.com/simplanio/simplan-framework
+edit_uri: edit/main/docs/
+theme: # readthedocs
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+  name: material
+  logo: img/SimplanLogo.png
+  favicon: img/favicon-96x96.png
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+
+nav:
+  - 'Overview': index.md
+  - 'Getting Started': GettingStarted.md
+  - 'Contribution Guide': ContributionGuide.md
+  - 'Simplan Implementation':
+    - 'Data Processing': 
+      - Overview: implementations/dataprocessing/data-processing.md
+      - Spark: implementations/dataprocessing/spark.md
+      - Flink: implementations/dataprocessing/flink.md
+      - Presto: implementations/dataprocessing/presto.md
+    - Orchestration:
+      - Overview: implementations/orchestration/orchestration.md
+    - Console: implementations/console.md
+    - Simplan Logging:
+        - 'Introduction': 'logging/Simplan Logging.md'
+        - 'Logging Fields':  'logging/Simplan Fields.md'
