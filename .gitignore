@@ -52,7 +52,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-mkdocs/site
+#Documentation
+site/
 #Project specific Ignores
 framework/None/
 
@@ -62,6 +63,3 @@ framework/None/
 #SBT Ignore Files
 project/
 .bsp/
-
-spark-launcher/src/main/resources/test*
-flink-launcher/src/main/resources/test*
