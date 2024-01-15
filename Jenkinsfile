@@ -156,7 +156,7 @@ pipeline {
 		          printf 'simplan.system.ci.framework.version=${revisionNo}\nsimplan.system.ci.framework.commitHash=${commitId}' > global/src/main/resources/simplan-framework-manifest.conf
 		        """
 		        mavenBuildCI("-P upload-artifact -Drevision=${revisionNo} -U -B -s settings.xml")
-		        gitTag(revisionNo, env.GIT_URL)
+		      //  gitTag(revisionNo, env.GIT_URL)
 		      }
 		      post {
 		        success {
@@ -176,13 +176,13 @@ pipeline {
 		      }
 	      }
 
-		    stage('DOCUMENTATION DEPLOYMENT') {
-		      steps{
-		        container('mkdocs'){
-		          mkdocsFunction()
-		        }
-		      }
-		    }
+//		    stage('DOCUMENTATION DEPLOYMENT') {
+//		      steps{
+//		        container('mkdocs'){
+//		          mkdocsFunction()
+//		        }
+//		      }
+//		    }
 
 	    }
     }
