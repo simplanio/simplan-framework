@@ -28,6 +28,7 @@ import scala.reflect.ClassTag
   */
 case class OperatorContext(
     taskName: String,
+    taskIndex: Long,
     taskDefinition: TaskDefinition,
     operatorType: OperatorType,
     operatorDefinition: OperatorDefinition,

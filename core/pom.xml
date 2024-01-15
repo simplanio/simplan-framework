@@ -19,12 +19,6 @@
             <groupId>com.intuit.data.simplan.framework</groupId>
             <artifactId>simplan-parserdsl</artifactId>
             <version>${revision}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.hive</groupId>
-                    <artifactId>hive-metastore</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

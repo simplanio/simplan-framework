@@ -24,6 +24,9 @@ import scala.reflect.ClassTag
 /** @author Abraham, Thomas - tabraham1
   *         Created on 09-Dec-2022 at 5:26 PM
   */
-abstract class BaseOperator[T <: OperatorConfig](applicationContext: AppContext, operatorContext: OperatorContext)(implicit m: ClassTag[T]) extends Operator(applicationContext, operatorContext) {
-   implicit lazy val operatorConfig: T = operatorContext.parseConfigAs[T]
+abstract class BaseOperator[T <: OperatorConfig](
+    applicationContext: AppContext,
+    operatorContext: OperatorContext)(implicit m: ClassTag[T])
+    extends Operator(applicationContext, operatorContext) {
+  implicit lazy val operatorConfig: T = operatorContext.parseConfigAs[T]
 }

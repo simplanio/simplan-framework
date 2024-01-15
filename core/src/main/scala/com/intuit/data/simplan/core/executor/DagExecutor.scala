@@ -48,8 +48,8 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
       logger.info(s"Start Executing $taskName(action)")
       val inProgressStatusEvent = operatorExecution.inProgress()
       emitOperatorDefinition(OperatorType.ACTION, taskExecutionTracker, actionOperatorConfig, inProgressStatusEvent)
-      val operator: Operator = instantiateOperator(appContext, taskName, taskConfig, OperatorType.ACTION, actionOperatorConfig)
-      val operatorRequest = new OperatorRequest( operatorResponseManager.operatorResponses)
+      val operator: Operator = instantiateOperator(appContext, taskExecutionTracker, taskConfig, OperatorType.ACTION, actionOperatorConfig)
+      val operatorRequest = new OperatorRequest(operatorResponseManager.operatorResponses)
       val response = operator.process(operatorRequest)
       val wrapper = XComWrapper(operatorClass = operator.getClass, operatorResponse = response)
       operatorResponseManager.append(taskName -> wrapper)
@@ -76,8 +76,8 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
           logger.info(s"Starting task: ${taskExecutionTracker.taskName}($operatorType) - Operator: ${operatorConfig.operator}")
           val inProgressEvent = operatorExecution.inProgress()
           emitOperatorDefinition(operatorType, taskExecutionTracker, operatorConfig, inProgressEvent)
-          val operator: Operator = instantiateOperator(appContext, taskExecutionTracker.taskName, taskConfig, operatorType, operatorConfig)
-          val operatorRequest: OperatorRequest = new OperatorRequest( operatorResponseManager.operatorResponses)
+          val operator: Operator = instantiateOperator(appContext, taskExecutionTracker, taskConfig, operatorType, operatorConfig)
+          val operatorRequest: OperatorRequest = new OperatorRequest(operatorResponseManager.operatorResponses)
           val response = operator.process(operatorRequest)
           response.canContinue
         } match {
@@ -105,12 +105,18 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
     }
   }
 
-  def instantiateOperator(appContext: Support, taskName: String, taskDefinition: TaskDefinition, operatorType: OperatorType, operatorDefinition: OperatorDefinition): Operator = {
+  def instantiateOperator(appContext: Support, taskExecutionTracker: TaskExecutionTracker, taskDefinition: TaskDefinition, operatorType: OperatorType, operatorDefinition: OperatorDefinition): Operator = {
     try {
       val className = appContext.appContextConfig.application.operatorMappings.getOrElse(operatorDefinition.operator, operatorDefinition.operator)
       val cls = Class.forName(className)
       try {
-        InitUtils.instantiate[Operator](cls, List(appContext, OperatorContext(taskName, taskDefinition, operatorType, operatorDefinition,dagConfig)))
+        InitUtils.instantiate[Operator](
+          cls,
+          List(
+            appContext,
+            OperatorContext(taskExecutionTracker.taskName, taskExecutionTracker.taskIndex, taskDefinition, operatorType, operatorDefinition, dagConfig)
+          )
+        )
       } catch {
         case illegalArgumentException: Exception =>
           throw new SimplanConfigException(s"Unable to Instantiate ${cls.getCanonicalName}. Please ensure application is started with ${appContext.getClass}", illegalArgumentException)

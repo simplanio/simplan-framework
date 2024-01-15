@@ -11,6 +11,7 @@ import com.intuit.data.simplan.core.json.{AWSAuthJacksonDeserializer, SinkJackso
 import com.intuit.data.simplan.core.opsmetrics.handlers.{OpsMetricHandler, Slf4JOpsMetricHandler}
 import com.intuit.data.simplan.global.json.SimplanJsonMapper
 import com.intuit.data.simplan.global.qualifiedstring.QualifiedParameterManager
+import org.slf4j.LoggerFactory
 
 import scala.util.Try
 
@@ -18,6 +19,8 @@ import scala.util.Try
   *         Created on 8/19/21 at 1:06 AM
   */
 abstract class AppContext(initContext: InitContext) extends Support {
+  private lazy val logger = LoggerFactory.getLogger(classOf[Support])
+
   addDefaultAppContextConfigFiles(List("common-operator-mappings.conf", "simplan-config-base.conf"))
   addUserAppContextConfigFiles(initContext.userConfigs.toList)
   initContext.configOverrides.foreach(each => addAppContextConfigOverride(each._1, each._2))
@@ -30,8 +33,12 @@ abstract class AppContext(initContext: InitContext) extends Support {
   SimplanJsonMapper.registerModule(simplanModule)
   lazy override val fileUtils: FileUtils = new LocalFileUtils
 
+  lazy val applicationId: String = appContextConfig.application.runId.get
+
   lazy val opsMetricsEmitter: OpsMetricHandler = {
     val config = Try(appContextConfig.getSystemConfigAs[OpsMetricsConfig]("opsMetrics")).getOrElse(OpsMetricsConfig(cls = classOf[Slf4JOpsMetricHandler].getCanonicalName))
-    Class.forName(config.cls).getConstructor(classOf[AppContext],classOf[OpsMetricsConfig]).newInstance(this,config).asInstanceOf[OpsMetricHandler]
+    val handler = Class.forName(config.cls).getConstructor(classOf[AppContext], classOf[OpsMetricsConfig]).newInstance(this, config).asInstanceOf[OpsMetricHandler]
+    logger.info(s"Using OpsMetrics Handler : ${handler.getClass.getCanonicalName}")
+    handler
   }
 }

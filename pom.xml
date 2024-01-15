@@ -35,18 +35,17 @@
 
         <pureconfig.version>0.9.0</pureconfig.version>
 
-        <jackson.version>2.13.2</jackson.version>
+        <jackson.version>2.14.2</jackson.version>
         <jackson-module-caseclass.version>1.1.1</jackson-module-caseclass.version>
-        <json4s.version>3.7.0-M11</json4s.version>
 
         <antlr4.version>4.7.1</antlr4.version>
         <antlr4.plugin.version>4.7.1</antlr4.plugin.version>
 
         <commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.8.0</commons-io.version>
-        <commons-text.version>1.9</commons-text.version>
+        <commons-text.version>1.10.0</commons-text.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
-        <httpcomponents.version>4.5.12</httpcomponents.version>
+        <httpcomponents.version>4.5.14</httpcomponents.version>
 
 
         <org.scalatest.version>3.0.4</org.scalatest.version>
@@ -66,6 +65,7 @@
         <encoding>UTF-8</encoding>
         <scoverage.plugin.version>1.4.1</scoverage.plugin.version>
 
+        <kafka-clients.version>3.2.3</kafka-clients.version>
     </properties>
 
     <dependencies>
@@ -135,15 +135,11 @@
             </dependency>
 
             <dependency>
-                <groupId>org.json4s</groupId>
-                <artifactId>json4s-core_${scala.minor.version}</artifactId>
-                <version>${json4s.version}</version>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka-clients.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.json4s</groupId>
-                <artifactId>json4s-jackson_${scala.minor.version}</artifactId>
-                <version>${json4s.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
@@ -228,6 +224,17 @@
                         <artifactId>scala-library</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>${antlr4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang.modules</groupId>
+                <artifactId>scala-parser-combinators_${scala.minor.version}</artifactId>
+                <version>${scala-parser-combinators.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.amazonaws</groupId>

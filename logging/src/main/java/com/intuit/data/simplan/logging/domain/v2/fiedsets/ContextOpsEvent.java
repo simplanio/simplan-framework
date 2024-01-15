@@ -59,6 +59,11 @@ public class ContextOpsEvent extends JacksonAnyProperty {
      */
     String orchestratorId;
 
+    /**
+     * Application Execution Id - Eg: Spark Application Id
+     */
+    String applicationId;
+
     public String getAppName() {
         return appName;
     }
@@ -164,6 +169,15 @@ public class ContextOpsEvent extends JacksonAnyProperty {
 
     public ContextOpsEvent setOrchestratorId(String orchestratorId) {
         this.orchestratorId = orchestratorId;
+        return this;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public ContextOpsEvent setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
         return this;
     }
 }

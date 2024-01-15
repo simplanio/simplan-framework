@@ -19,7 +19,7 @@ package com.intuit.data.simplan.core.opsmetrics.handlers
 
 import com.intuit.data.simplan.common.config.OpsMetricsConfig
 import com.intuit.data.simplan.core.context.AppContext
-import com.intuit.data.simplan.core.opsmetrics.SimplanMetricFormatter
+import com.intuit.data.simplan.core.opsmetrics.OpsEventFormatter
 import com.intuit.data.simplan.logging.domain.v2.SimplanOpsEvent
 import com.intuit.data.simplan.logging.domain.v2.fiedsets.EventLevel
 import com.intuit.data.simplan.logging.events.SimplanEvent
@@ -29,25 +29,50 @@ import com.intuit.data.simplan.logging.events.SimplanEvent
   *         Created on 19-Sep-2023 at 11:22 PM
   */
 abstract class OpsMetricHandler(val appContext: AppContext, val opsMetricsConfig:OpsMetricsConfig) {
-  def emit(metric: SimplanOpsEvent): Unit
+  protected def emit(metric: SimplanOpsEvent): Unit
 
-  def trace(metric: SimplanEvent): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.TRACE))
+  def trace(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.TRACE))
 
-  def debug(metric: SimplanEvent): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.DEBUG))
+  def debug(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.DEBUG))
 
-  def info(metric: SimplanEvent): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.INFORMATIONAL))
+  def info(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.INFORMATIONAL))
 
-  def important(metric: SimplanEvent): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.IMPORTANT))
+  def important(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.IMPORTANT))
 
-  def critical(metric: SimplanEvent): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.VERY_IMPORTANT))
+  def critical(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.VERY_IMPORTANT))
 
-  def trace(metric: SimplanEvent, throwable: Throwable): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.TRACE, Option(throwable)))
+  def trace(metric: SimplanEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.TRACE, Option(throwable)))
 
-  def useful(metric: SimplanEvent, throwable: Throwable): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.DEBUG, Option(throwable)))
+  def useful(metric: SimplanEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.DEBUG, Option(throwable)))
 
-  def info(metric: SimplanEvent, throwable: Throwable): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.INFORMATIONAL, Option(throwable)))
+  def info(metric: SimplanEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.INFORMATIONAL, Option(throwable)))
 
-  def important(metric: SimplanEvent, throwable: Throwable): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.IMPORTANT, Option(throwable)))
+  def important(metric: SimplanEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.IMPORTANT, Option(throwable)))
 
-  def critical(metric: SimplanEvent, throwable: Throwable): Unit = emit(SimplanMetricFormatter.format(appContext, metric.toOpsEvent, EventLevel.VERY_IMPORTANT, Option(throwable)))
+  def critical(metric: SimplanEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.VERY_IMPORTANT, Option(throwable)))
+
+
+  def trace(metric: SimplanOpsEvent): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.TRACE))
+
+  def debug(metric: SimplanOpsEvent): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.DEBUG))
+
+  def info(metric: SimplanOpsEvent): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.INFORMATIONAL))
+
+  def important(metric: SimplanOpsEvent): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.IMPORTANT))
+
+  def critical(metric: SimplanOpsEvent): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.VERY_IMPORTANT))
+
+  def trace(metric: SimplanOpsEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.TRACE, Option(throwable)))
+
+  def useful(metric: SimplanOpsEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.DEBUG, Option(throwable)))
+
+  def info(metric: SimplanOpsEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.INFORMATIONAL, Option(throwable)))
+
+  def important(metric: SimplanOpsEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.IMPORTANT, Option(throwable)))
+
+  def critical(metric: SimplanOpsEvent, throwable: Throwable): Unit = emit(OpsEventFormatter.format(appContext, metric, EventLevel.VERY_IMPORTANT, Option(throwable)))
+
+
+
+
 }

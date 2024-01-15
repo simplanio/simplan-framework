@@ -3,7 +3,7 @@ package com.intuit.data.simplan.parser
 import com.intuit.data.simplan.parser.errors.SyntaxErrorListener
 import com.intuit.data.simplan.parser.grammer.sparksql.{SparkSqlBaseLexer, SparkSqlBaseParser}
 import com.intuit.data.simplan.parser.sql._
-import com.intuit.data.simplan.parser.sql.catalog.{MetastoreCatalogProvider, ThriftMetastoreCatalogProvider}
+import com.intuit.data.simplan.parser.sql.catalog.MetastoreCatalogProvider
 import org.antlr.v4.runtime.{CharStreams, CommonTokenStream}
 
 import java.util

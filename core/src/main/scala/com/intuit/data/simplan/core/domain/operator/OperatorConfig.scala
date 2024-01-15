@@ -31,6 +31,7 @@ trait OperatorConfig extends Serializable {
 
   @JsonIgnore private val _additionalProperties: util.HashMap[String, AnyRef] = new util.HashMap[String, AnyRef]
   @JsonAnyGetter def getAdditionalProperties: util.Map[String, AnyRef] = this._additionalProperties
+
   @JsonAnySetter def setAdditionalProperty(name: String, value: AnyRef): OperatorConfig = {
     this._additionalProperties.put(name, value)
     this

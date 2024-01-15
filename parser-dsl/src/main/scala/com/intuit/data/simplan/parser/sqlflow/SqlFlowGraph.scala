@@ -18,7 +18,6 @@
 package com.intuit.data.simplan.parser.sqlflow
 
 import com.intuit.data.simplan.parser.ast.ASTTreeBuilder
-import com.intuit.data.simplan.parser.ast.sparksql.SparkSqlASTTreeBuilder
 import com.intuit.data.simplan.parser.sql._
 import com.intuit.data.simplan.parser.sqlflow.SqlFlowGraph.generateSqlFlow
 
@@ -39,8 +38,8 @@ object SqlFlowGraph extends Serializable {
 
   def apply(dialect: String = "sparksql"): SqlFlowGraph = {
     val asttree: ASTTreeBuilder = dialect match {
-      case "sparksql" => SparkSqlASTTreeBuilder()
-      case _          => throw new Exception("Unsupported dialect")
+//      case "sparksql" => SparkSqlASTTreeBuilder()
+      case _ => throw new Exception("Unsupported dialect")
     }
     new SqlFlowGraph(asttree)
   }

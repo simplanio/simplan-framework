@@ -22,11 +22,6 @@ public class SystemMetricsForwarder {
         new JvmGcMetrics().bindTo(registry);
         new ProcessorMetrics().bindTo(registry);
         new JvmThreadMetrics().bindTo(registry);
-        // needed for monitoring consumer lag but looks like its deprecated
-        // todo: explore alternative ways to provide lag. Some options:
-        // 1. enhance consumer with KafkaClient metrics like we do in beam sdk
-        // 2. explore enabling flink's Kafka Connector Metrics -
-        // https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/datastream/kafka//#monitoring
         new KafkaConsumerMetrics().bindTo(registry);
     }
 

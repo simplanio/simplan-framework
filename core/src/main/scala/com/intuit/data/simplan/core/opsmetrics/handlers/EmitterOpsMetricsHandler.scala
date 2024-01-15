@@ -19,23 +19,24 @@ package com.intuit.data.simplan.core.opsmetrics.handlers
 
 import com.intuit.data.simplan.common.config.OpsMetricsConfig
 import com.intuit.data.simplan.core.context.AppContext
+import com.intuit.data.simplan.logging.Logging
 import com.intuit.data.simplan.logging.domain.v2.SimplanOpsEvent
 import com.intuit.data.simplan.logging.domain.v2.fiedsets.EventLevel
 
-/**
-  * @author Abraham, Thomas - tabraham1
+/** @author Abraham, Thomas - tabraham1
   *         Created on 19-Sep-2023 at 11:58 PM
   */
-class EmitterOpsMetricsHandler(appContext: AppContext, opsMetricsConfig: OpsMetricsConfig) extends OpsMetricHandler(appContext, opsMetricsConfig) {
+class EmitterOpsMetricsHandler(appContext: AppContext, opsMetricsConfig: OpsMetricsConfig) extends OpsMetricHandler(appContext, opsMetricsConfig) with Logging {
 
   private val emitterName = opsMetricsConfig.resolvedConfig.getOrElse("emitterName", "opsMetrics")
   private val level = opsMetricsConfig.resolvedConfig.getOrElse("level", EventLevel.INFORMATIONAL.toString)
   private val levelEnum = EventLevel.valueOf(level)
   private lazy val emitter = appContext.emitters.get(emitterName)
 
-  override def emit(metric: SimplanOpsEvent): Unit = {
-    if (metric.context.getLevel.ordinal() >= levelEnum.ordinal())
-      emitter.emitObject(metric)
+  override protected def emit(metric: SimplanOpsEvent): Unit = {
+    if (metric.context.getLevel.ordinal() >= levelEnum.ordinal()) {
+      emitter.emitObjectWithKey(metric, metric.context.getRunId)
+    }
   }
 
 }

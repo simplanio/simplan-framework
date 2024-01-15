@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
 /** @author Abraham, Thomas - tabraham1
   *         Created on 12-Apr-2022 at 5:32 PM
   */
-class OperatorDefinitionEvent(operatorExecutionStatusEvent: OperatorExecutionStatusEvent, operatorDefinition: OperatorDefinition, operatorType: String, taskName: String) extends SimplanEvent {
+class OperatorMetricsEvent(operatorExecutionStatusEvent: OperatorExecutionStatusEvent, operatorDefinition: OperatorDefinition, operatorType: String, taskName: String) extends SimplanEvent {
 
   private val _operatorDefinition: ConfigDefinitionOpsEvent = new ConfigDefinitionOpsEvent()
     .setConfig(operatorDefinition.config.fromJson[Map[String, AnyRef]].asJava)
@@ -20,12 +20,11 @@ class OperatorDefinitionEvent(operatorExecutionStatusEvent: OperatorExecutionSta
 
   override def toOpsEvent: SimplanOpsEvent = {
     val event = operatorExecutionStatusEvent.toOpsEvent
-      .setMessage(s"Operator Definition for $taskName($operatorType)")
+      .setMessage(s"Operator Metrics for $taskName($operatorType)")
       .setProcess(null)
       .setConfigDefinition(_operatorDefinition)
-      .setEventData(_operatorDefinition)
-    event.getContext.setType(MetricConstants.Type.CONFIG_DEFINITION)
-    event.getContext.setAction(MetricConstants.Action.OPERATOR_DEFINITION)
+    event.getContext.setType(MetricConstants.Type.METRIC)
+    event.getContext.setAction(MetricConstants.Action.OPERATOR_METRICS)
     event
   }
 }

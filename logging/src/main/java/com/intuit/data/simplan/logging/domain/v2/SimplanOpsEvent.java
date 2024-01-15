@@ -25,11 +25,15 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
     public TaskOpsEvent task;
     public ProcessOpsEvent process;
     public Object configDefinition;
-    public Object metric;
+    public Object eventData;
     public MetaOpsEvent meta;
     public ContextOpsEvent context;
-    public Map<String, Double> aggs;
 
+    public SimplanOpsEvent() {
+        this.timestamp = Instant.now();
+        this.setTags(null);
+        this.setLabels(null);
+    }
 
     public static SimplanOpsEvent fromJson(String json) {
         return JacksonJsonMapper.fromJson(json, SimplanOpsEvent.class);
@@ -111,15 +115,6 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
         return this;
     }
 
-    public Map<String, Double> getAggs() {
-        return aggs;
-    }
-
-    public SimplanOpsEvent setAggs(Map<String, Double> aggs) {
-        this.aggs = aggs;
-        return this;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -151,12 +146,12 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
         return this;
     }
 
-    public Object getMetric() {
-        return metric;
+    public Object getEventData() {
+        return eventData;
     }
 
-    public SimplanOpsEvent setMetric(Object metric) {
-        this.metric = metric;
+    public SimplanOpsEvent setEventData(Object eventData) {
+        this.eventData = eventData;
         return this;
     }
 }

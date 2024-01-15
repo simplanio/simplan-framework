@@ -8,6 +8,5 @@ import com.intuit.data.simplan.core.context.AppContext
   */
 abstract class Operator(appContext: AppContext, operatorContext: OperatorContext) extends Serializable {
   def process(request: OperatorRequest): OperatorResponse
-
   def validateDefinition(definition: OperatorDefinition): Boolean = true
 }

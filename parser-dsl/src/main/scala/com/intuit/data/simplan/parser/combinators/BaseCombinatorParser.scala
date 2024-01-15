@@ -13,6 +13,7 @@ class BaseCombinatorParser extends JavaTokenParsers with Serializable {
   def value: Parser[Any] = stringLiteral ^^ (_.replaceAll("\"", "")) | number | booleanValue
   def valueSequence: Parser[List[Any]] = repsep(value, ",")
   def stringVar: Parser[String] = "[a-zA-Z0-9_]+".r
+  def stringVarList: Parser[String] = "[a-zA-Z0-9_,]+".r
   def functionName: Parser[String] = "[a-zA-Z]+".r
   def comparator: Parser[String] = "==" | "!=" | ">=" | "<=" | "<" | ">"
   def operator: Parser[String] = "+" | "*" | "-" | "/"

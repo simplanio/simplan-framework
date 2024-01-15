@@ -16,6 +16,7 @@ abstract class SimplanEmitter(emitterConfig: SimplanEmitterConfig) extends Seria
   def emit(target: String, key: String, message: String): Boolean = emitInternal(message, Option(target), Option(key))
 
   def emitObject(message: AnyRef): Boolean = emitInternal(message.toJson, None, None)
+  def emitObjectWithKey(message: AnyRef,key:String): Boolean = emitInternal(message.toJson, None, Option(key))
   def emitObject(target: String, message: AnyRef): Boolean = emitInternal(message.toJson, Option(target), None)
   def emitObject(target: String, key: String, message: AnyRef): Boolean = emitInternal(message.toJson, Option(target), Option(key))
 

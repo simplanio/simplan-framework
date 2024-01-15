@@ -68,6 +68,7 @@ case class TaskExecutionTracker(appContext: AppContext, taskName: String, taskIn
     stepInfoFields += ("canContinue" -> "false")
     stepInfoFields += ("status" -> "failed")
     stepInfoFields += ("errorCount" -> "1")
+    stepInfoFields += ("errorCount" -> "1")
     instrumentJobCompletion()
   }
 

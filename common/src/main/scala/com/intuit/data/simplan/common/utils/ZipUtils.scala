@@ -17,6 +17,8 @@
 
 package com.intuit.data.simplan.common.utils
 
+import com.intuit.data.simplan.logging.Logging
+
 import java.io.{File, FileInputStream, IOException}
 import java.nio.file.{Files, Path, StandardCopyOption}
 import java.util.zip.{ZipEntry, ZipInputStream}
@@ -24,7 +26,7 @@ import java.util.zip.{ZipEntry, ZipInputStream}
 /** @author Abraham, Thomas - tabraham1
   *         Created on 17-Feb-2023 at 10:54 PM
   */
-object ZipUtils {
+object ZipUtils extends Logging {
 
   @throws[IOException]
   def unzipFolder(source: Path, target: Path): Unit = {
@@ -43,6 +45,8 @@ object ZipUtils {
           zipEntry = zis.getNextEntry
         }
         zis.closeEntry()
+      } catch {
+        case e: Throwable => logger.error(s"Unzipping Failed for $source", e)
       } finally if (zis != null) zis.close()
     }
 

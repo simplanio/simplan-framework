@@ -10,7 +10,7 @@ import scala.util.Try
 /** @author Abraham, Thomas - tabraham1
   *         Created on 12-Nov-2021 at 9:13 AM
   */
-object SimplanMetricFormatter {
+object OpsEventFormatter {
 
   def format(appContext: AppContext, opsEvent: SimplanOpsEvent, level: EventLevel = EventLevel.IMPORTANT, throwable: Option[Throwable] = None): SimplanOpsEvent = {
     val eventLevel = level
@@ -31,6 +31,7 @@ object SimplanMetricFormatter {
       context.setAppName(appContext.appContextConfig.application.name)
       context.setParentName(appContext.appContextConfig.application.parent.orNull)
       context.setEnvironment(appContext.appContextConfig.application.environment)
+      context.setApplicationId(appContext.applicationId)
       opsEvent.setContext(context)
 
       val meta = Option(opsEvent.meta).getOrElse(new MetaOpsEvent())
