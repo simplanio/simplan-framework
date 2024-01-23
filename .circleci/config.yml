@@ -5,5 +5,5 @@ jobs:
       - image: cimg/openjdk:8.0.392
     steps:
       - checkout
-      - run: mvn clean install
+      - run: mvn clean install -T7
       - run: mvn test
