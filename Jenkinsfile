@@ -10,11 +10,11 @@ def revisionNo = ""
 // Converting Slashes to hyphens from branch name
 def branchNameConverted = env.BRANCH_NAME.replace('/','-')
 // Adding version suffix to a non-release build.
-def versionSuffix = ('main' != env.BRANCH_NAME) ? "-${branchNameConverted}-SNAPSHOT" : ''
+def versionSuffix = ('Imain' != env.BRANCH_NAME) ? "-${branchNameConverted}-SNAPSHOT" : ''
 // Slack channel. For snapshots has a -snapshot appended
 def slackChannel = "build-simplan"
 def slackCrChannel = "${slackChannel}-cr-notifications"
-slackChannel = ('main' == env.BRANCH_NAME) ? slackChannel : "${slackChannel}-snapshot"
+slackChannel = ('Imain' == env.BRANCH_NAME) ? slackChannel : "${slackChannel}-snapshot"
 // Slack messages for snapshot and release, please look below set in INIT DEFINITIONS to modify RELEASE MESSAGE value.
 def slackRepoName = "*FRAMEWORK (OPEN SOURCE)*\n"
 def slackSnapshotMessage  = "#<${env.RUN_DISPLAY_URL}|${env.BUILD_NUMBER}> for branch ${env.BRANCH_NAME}.\n"
@@ -103,9 +103,9 @@ pipeline {
         script {
           config = readConfigYAML()
           commitId = sh(script: 'git rev-parse HEAD',returnStdout: true)
-          revisionNo = ('main' == env.BRANCH_NAME) ? config.artifactVersion+'.'+env.BUILD_NUMBER : "1.0.0${versionSuffix}"
+          revisionNo = ('Imain' == env.BRANCH_NAME) ? config.artifactVersion+'.'+env.BUILD_NUMBER : "1.0.0${versionSuffix}"
           slackReleaseMessage = "*RELEASE* v<${env.RUN_DISPLAY_URL}|${revisionNo}>\n"
-          slackMessage = slackRepoName + (('main' == env.BRANCH_NAME) ? slackReleaseMessage : slackSnapshotMessage)
+          slackMessage = slackRepoName + (('Imain' == env.BRANCH_NAME) ? slackReleaseMessage : slackSnapshotMessage)
         }
       }
     }
@@ -114,7 +114,7 @@ pipeline {
       when {
         anyOf {
           changeRequest ()
-          not { branch 'main' }
+          not { branch 'Imain' }
         }
       }
       steps {
@@ -134,7 +134,7 @@ pipeline {
       when {
         allOf {
           not { changeRequest() }
-          branch 'main'
+          branch 'Imain'
         }
       }
       stages {
@@ -228,7 +228,7 @@ def gitTag(String tagValue, String GIT_URL){
 }
 
 def numbersAccordingBranch(){
-  if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop') return '20'
+  if (env.BRANCH_NAME == 'Imain' || env.BRANCH_NAME == 'develop') return '20'
   else return '5'
 }
 
