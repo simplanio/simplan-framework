@@ -1,0 +1,9 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:8.0.392
+    steps:
+      - checkout
+      - run: mvn clean install -T7
+      - run: mvn test
