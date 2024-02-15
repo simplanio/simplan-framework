@@ -7,7 +7,8 @@ case class SimplanAppContextConfiguration(
     application: ApplicationConfig,
     system: SystemConfig,
     features: Map[String, Boolean] = Map.empty,
-    emitters: Map[String, SimplanEmitterConfig] = Map.empty
+    emitters: Map[String, SimplanEmitterConfig] = Map.empty,
+    variables: Map[String, String] = Map.empty
 ) extends Serializable {
 
   def getSystemConfigAs[T](key: String)(implicit m: Manifest[T]): T =
