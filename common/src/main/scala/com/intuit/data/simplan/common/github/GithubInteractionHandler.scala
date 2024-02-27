@@ -46,6 +46,7 @@ class GithubInteractionHandler(
   private lazy val contentsService = new ContentsService(client)
   private lazy val prService = new PullRequestService(client)
   private lazy val dataService = new DataService(client)
+  private lazy val commitServiceExtention = new CommitServiceExtention(client)
 
   def getFileContents(owner: String, repoName: String, relativePath: String): Option[GithubFileContent] = getFileContents(owner, repoName, relativePath, None)
 
@@ -124,6 +125,18 @@ class GithubInteractionHandler(
   def mergePR(owner: String, repoName: String, commitMessage: String, pullRequestId: Int): MergeStatus = {
     val pullRequest = getPullRequestById(owner, repoName, pullRequestId)
     mergePR(owner, repoName, commitMessage, pullRequest.get)
+  }
+
+  // branchName and filePath inputs can be set to null if not desired
+  def getRepoCommits(owner: String, repositoryName: String, branchName: String, filePath: String, pageSize: Int, pageNumber: Int) = {
+    val repositoryId = new RepositoryId(owner, repositoryName)
+    try {
+      println(s"Fetching github commits on branch $branchName for repository $repositoryName belonging to $owner (page $pageNumber with size of $pageSize)")
+      commitServiceExtention.pageCommits(repositoryId, branchName, filePath, pageSize, pageNumber)
+    } catch {
+      case e: Exception =>
+        throw new Exception(s"Exception occurred when getting github repo commits by branch: ${e.getMessage}")
+    }
   }
 
 }
