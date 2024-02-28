@@ -8,7 +8,7 @@ import org.eclipse.egit.github.core.service.CommitService
 import java.util
 import java.util.List
 
-class CommitServiceExtention(client: GitHubClient) extends CommitService {
+class CommitServiceExtention (client: GitHubClient) extends CommitService (client)  {
 
   def pageCommits(repository: IRepositoryIdProvider, sha: String, path: String, pageSize: Int, pageNumber: Int): PageIterator[RepositoryCommit] = {
     val id: String = this.getId(repository)
