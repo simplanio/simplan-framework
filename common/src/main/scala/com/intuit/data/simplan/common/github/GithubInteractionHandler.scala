@@ -131,7 +131,6 @@ class GithubInteractionHandler(
   def getRepoCommits(owner: String, repositoryName: String, branchName: String, filePath: String, pageSize: Int, pageNumber: Int) = {
     val repositoryId = new RepositoryId(owner, repositoryName)
     try {
-      println(s"Fetching github commits on branch $branchName for repository $repositoryName belonging to $owner (page $pageNumber with size of $pageSize)")
       commitServiceExtention.pageCommits(repositoryId, branchName, filePath, pageSize, pageNumber)
     } catch {
       case e: Exception =>
