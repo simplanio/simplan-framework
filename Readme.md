@@ -4,12 +4,10 @@
 Unified Platform to process data in both batch and streaming as a unified platform with low code/no code capabilities. Provides a common abstraction to define pluggable operators for processing both batch and streaming data and run on different execution engines with ability to integrate with various source/sinks.
 
 ## Simplan Framework Documentation
-- For framework documentation : [Simplan Framework](https://github.intuit.com/pages/Simplan/simplan-framework/)
+- For framework documentation : [Simplan Framework](https://simplanio.github.io/simplan-docs)
 
 ## Simplan Implementations
 - [Simplan Spark](https://github.intuit.com/pages/Simplan/simplan-spark/)
-- [Simplan Flink](https://github.intuit.com/pages/tabraham1/simplan-flink/)
-- [Simplan Presto](https://github.intuit.com/pages/Simplan/simplan-presto/)
 
 ## Build and Publish to artifactory
 
