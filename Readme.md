@@ -1,6 +1,5 @@
 # SimPlan - Simple Execution Planner (Unified Processing Platform)
 
-[![Build Status](https://build.intuit.com/tech-ea/buildStatus/buildIcon?job=Simplan/simplan-framework/simplan-framework/master/)](https://build.intuit.com/tech-ea/job/Simplan/job/simplan-framework/job/simplan-framework/job/master/) 
 
 Unified Platform to process data in both batch and streaming as a unified platform with low code/no code capabilities. Provides a common abstraction to define pluggable operators for processing both batch and streaming data and run on different execution engines with ability to integrate with various source/sinks.
 
