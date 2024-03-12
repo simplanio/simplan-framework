@@ -17,5 +17,8 @@ class ScriptCommandLineParameters(
     val runId: Option[String] = None,
     val environment: Option[String] = None,
     val orchestratorId: Option[String] = None,
-    val orchestrator: Option[String] = None
+    val orchestrator: Option[String] = None,
+    val dmrPipelineEntityIrn: Option[String] = None,
+    val dmrProcessorEntityIrn: Option[String] = None,
+    val dmrJobEntityIrn: Option[String] = None
 ) extends Serializable
