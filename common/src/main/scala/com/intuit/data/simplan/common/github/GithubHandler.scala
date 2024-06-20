@@ -8,7 +8,7 @@ import com.intuit.data.simplan.common.utils.GithubUtils.decode
 import com.intuit.data.simplan.global.json.JacksonUtil
 import org.eclipse.egit.github.core._
 import org.eclipse.egit.github.core.client.GitHubClient
-import org.eclipse.egit.github.core.service.{ContentsService, DataService, PullRequestService}
+import org.eclipse.egit.github.core.service.{ContentsService, DataService, PullRequestService, RepositoryService}
 
 import java.net.URL
 import java.util.Arrays.asList
@@ -56,6 +56,23 @@ class GithubHandler(host: String, token: String, scheme: String = "https", port:
     Some(pullRequest)
   }
 
+  def getRepository(owner: String, repoName: String): Option[Repository] = {
+    val repoService = new RepositoryService(client)
+    val repoRequest = repoService.getRepository(owner,repoName)
+    Some(repoRequest)
+  }
+
+  def getOrgRepository(owner: String, repoName: String): Option[Repository] = {
+    val repoService = new RepositoryService(client)
+
+    val repoListRequest = repoService.getOrgRepositories(owner,null)
+    val repo: Repository =
+      repoListRequest.stream().filter(list => list.getName == repoName)
+        .findFirst().orElse(null)
+
+    if(repo == null) None else Some(repo)
+  }
+  
   /** Create pull request with specified contents.
     *
     * @param filesToAddOrModify Map of file paths to contents for the files to be committed to the branch
