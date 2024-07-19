@@ -130,10 +130,11 @@ pipeline {
           PRPostSuccess(config)
         }
         always {
-        container('sonar-maven')
-                {
+            container('sonar-maven')
+            {
                  PRPostAlways(config)
-                }        }
+            }
+        }
       }
     }
 
@@ -178,7 +179,10 @@ pipeline {
 		              }
 	              }
 		          }
+		          container('sonar-maven')
+                {
 		          CIPostAlways(config)
+		          }
 		        }
 		      }
 	      }
