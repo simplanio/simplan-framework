@@ -36,7 +36,7 @@ pipeline {
         spec:
           containers:
           - name: maven
-            image: 'docker.intuit.com/oicp/standard/maven/amzn-maven-corretto11:5'
+            image: 'docker.artifactory.a.intuit.com/maven:3.5.3-jdk-8'
             tty: true
             command:
             - cat
@@ -165,7 +165,7 @@ pipeline {
 		        always {
 		          script {
 		            stage("Close CR"){
-				          container('servicenow') {
+				        container('servicenow') {
 		                sh label: 'Close CR', script: 'echo "Closes CR"'
 		                closeSnowCR(config, 'prd')
 		              }
