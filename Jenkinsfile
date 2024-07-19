@@ -1,5 +1,5 @@
 @Library(value='ibp-libraries', changelog=false) _
-@Library(value = 'msaas-shared-lib', changelog = false) l2
+//@Library(value = 'msaas-shared-lib', changelog = false) l2
 
 def config = [:]
 
