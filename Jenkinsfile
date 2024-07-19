@@ -171,10 +171,10 @@ pipeline {
 		      }
 		      post {
 		        success {
-// 		         container('sonar-maven')
-//                             {
+		         container('sonar-maven')
+                            {
                             CIPostSuccess(config)
-//                             }
+                            }
 		        }
 		        always {
 		          script {
