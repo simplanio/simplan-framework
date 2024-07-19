@@ -36,7 +36,7 @@ pipeline {
         spec:
           containers:
           - name: maven
-            image: 'docker.artifactory.a.intuit.com/maven:3.5.3-jdk-8'
+            image: 'docker.intuit.com/oicp/standard/maven/amzn-maven-corretto11:5'
             tty: true
             command:
             - cat
