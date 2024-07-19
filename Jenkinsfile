@@ -172,8 +172,7 @@ pipeline {
 		      post {
 		        success {
 		         container('sonar-maven')
-                            {
-                            CIPostSuccess(config)
+                            {  CIPostSuccess(config)
                             }
 		        }
 		        always {
