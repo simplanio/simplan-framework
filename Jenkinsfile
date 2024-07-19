@@ -127,7 +127,10 @@ pipeline {
       }
       post {
         success {
-          PRPostSuccess(config)
+          container('sonar-maven')
+                     { PRPostSuccess(config)
+
+                     }
         }
         always {
             container('sonar-maven')
@@ -168,7 +171,9 @@ pipeline {
 		      }
 		      post {
 		        success {
-		          CIPostSuccess(config)
+		         container('sonar-maven')
+                            {  CIPostSuccess(config)
+                            }
 		        }
 		        always {
 		          script {

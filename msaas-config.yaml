@@ -1,5 +1,5 @@
 gitOrg: Simplan
-service_name: replay-events-ingester
+service_name: simplan-framework
 asset_id: 2525411083940755299
 asset_alias: Intuit.simplan.simplanframework
 #asset_alias: ${paws.service-asset-alias}
