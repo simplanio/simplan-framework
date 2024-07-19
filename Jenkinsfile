@@ -36,7 +36,7 @@ pipeline {
         spec:
           containers:
           - name: maven
-            image: 'docker.intuit.com/oicp/standard/maven/amzn-maven-corretto11:5'
+            image: 'docker.artifactory.a.intuit.com/maven:3.5.3-jdk-8'
             tty: true
             command:
             - cat
@@ -59,6 +59,11 @@ pipeline {
             volumeMounts:
               - name: shared-build-output
                 mountPath: /var/run/outputs
+          - name: sonar-maven
+            image: 'docker.artifactory.a.intuit.com/maven:3.6.0-jdk-11'
+            command:
+                - cat
+            tty: true
           - name: servicenow
             image: docker.intuit.com/coe/servicenow-cr-agent/service/servicenow-cr-agent:latest
             tty: true
@@ -125,8 +130,10 @@ pipeline {
           PRPostSuccess(config)
         }
         always {
-          PRPostAlways(config)
-        }
+        container('sonar-maven')
+                {
+                 PRPostAlways(config)
+                }        }
       }
     }
 
@@ -176,14 +183,6 @@ pipeline {
 		      }
 	      }
 
-//		    stage('DOCUMENTATION DEPLOYMENT') {
-//		      steps{
-//		        container('mkdocs'){
-//		          mkdocsFunction()
-//		        }
-//		      }
-//		    }
-
 	    }
     }
   }
@@ -214,34 +213,9 @@ def removeSpacesEnv(String word){
   return word
 }
 
-def gitTag(String tagValue, String GIT_URL){
-  withCredentials([usernamePassword(credentialsId: 'github-svc-sbseg-ci', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-    sh """
-      set +x
-      git config user.name svc-sbseg-ci
-      git config user.email SBSEGCI-Admins@intuit.com
-      git tag ${tagValue}
-      git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_URL} --tags
-      set -x
-    """
-  }
-}
-
 def numbersAccordingBranch(){
   if (env.BRANCH_NAME == 'Imain' || env.BRANCH_NAME == 'develop') return '20'
   else return '5'
-}
-
-def mkdocsFunction(){
-  withCredentials([usernamePassword(credentialsId: 'github-svc-sbseg-ci', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-    sh """
-      git config user.name svc-sbseg-ci
-      git config user.email SBSEGCI-Admins@intuit.com
-      git config --global url."https://${GIT_USERNAME}:${GIT_PASSWORD}@github.intuit.com".insteadOf https://github.intuit.com
-      git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-      bash gh-deploy.sh
-    """
-  }
 }
 
 def slackCRNotification(slackRepoName, slackCrChannel){
