@@ -35,7 +35,7 @@
 
         <pureconfig.version>0.9.0</pureconfig.version>
 
-        <jackson.version>2.14.2</jackson.version>
+        <jackson.version>2.15.2</jackson.version>
 <!--        <jackson-module-caseclass.version>1.1.1</jackson-module-caseclass.version>-->
 
         <antlr4.version>4.7.1</antlr4.version>
