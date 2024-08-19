@@ -7,4 +7,11 @@ import com.intuit.data.simplan.core.domain.operator.OperatorConfig
   *         Created on 18-Nov-2021 at 9:36 PM
   */
 //case class SqlStatementConfig(sql: String, table: String, tableType: TableType = TableType.NONE) extends Serializable
-class SqlStatementConfig(val sql: String, val table: Option[String], val tableType: TableType = TableType.NONE) extends OperatorConfig
+class SqlStatementConfig(
+    val sql: String,
+    val table: Option[String],
+    val tableType: TableType = TableType.NONE,
+    val tableFormat: Option[String] = None
+) extends OperatorConfig {
+  def resolvedTableFormat: String = tableFormat.getOrElse("parquet")
+}
