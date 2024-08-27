@@ -30,14 +30,25 @@ import scala.util.{Failure, Success, Try}
   */
 class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfiguration) extends DagExecutor(appContext, dagConfig) {
 
+  private def filterTaskOrderFromOperation(taskOrder: List[String], itemToFilter: String): List[String] = {
+    val index = taskOrder.indexOf(itemToFilter)
+    if (index >= 0) taskOrder.drop(index) else taskOrder
+  }
+
   override def execute[T <: Serializable](runParameters: T): Boolean = {
     val taskOrder = dagConfig.tasks.order
-    val pipelineConfStr = generatePipelineConfStr(appContext.appContextConfig)
-    logger.info(s"${pipelineConfStr}")
+    val startingTask = if (dagConfig.tasks.startingTask != null) dagConfig.tasks.startingTask else None
+    val orderFilter = startingTask match {
+      case Some(value) =>
+        logger.info("Task filter applied : Starting from task : " + startingTask.get)
+        filterTaskOrderFromOperation(taskOrder, value)
+      case None => taskOrder
+    }
+    logger.info(s"Executing Finalized tasks: $orderFilter")
     logger.info("Task Execution Started")
     breakable {
-      taskOrder.zipWithIndex.foreach {
-        case (taskName, index) => {
+      orderFilter.zipWithIndex.foreach {
+        case (taskName, index) =>
           val taskExecutionTracker = TaskExecutionTracker(appContext, taskName, index)
           Try {
             taskExecutionTracker.inProgress()
@@ -46,7 +57,7 @@ class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfi
             if (triggerResponse) {
               val operatorResponse = processActionOperator(taskDefinition.action, taskDefinition, taskExecutionTracker)
               if (!operatorResponse.canContinue) {
-                logger.info(s"Operator $taskName canContine is false. Skipping rest of the execution")
+                logger.info(s"Operator $taskName canContinue is false. Skipping rest of the execution")
                 operatorResponse.throwable match {
                   case Some(value) => logger.warn(value.getMessage, value)
                   case _           =>
@@ -68,7 +79,6 @@ class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfi
             case Success(_)         => taskExecutionTracker.success()
             case Failure(exception) => taskExecutionTracker.failed(s"Task Execution failed : ${exception.getMessage}", Some(exception)); throw exception
           }
-        }
       }
     }
     logger.info("Task Execution Complete")

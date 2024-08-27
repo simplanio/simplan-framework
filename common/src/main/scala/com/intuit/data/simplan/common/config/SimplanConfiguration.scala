@@ -25,6 +25,7 @@ case class SimplanTasksConfiguration(
 ) extends Serializable
 
 case class TasksConfig(
+    startingTask: Option[String],
     order: List[String],
     dag: Map[String, TaskDefinition]
 ) extends Serializable

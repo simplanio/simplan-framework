@@ -52,11 +52,15 @@ class Application(val appContext: AppContext) extends Serializable with Logging 
 
   def stop: Boolean = ???
 
-  def addConfigs(configs: List[String]): Application = { this.userTaskConfigFiles ++= configs; this }
-  def addConfigs(configs: String*): Application = { this.userTaskConfigFiles ++= configs; this }
+  def addConfigs(configs: List[String]): Application = withConfigs(configs)
+  def addConfigs(configs: String*): Application = withConfigs(configs: _*)
+  def withConfigs(configs: List[String]): Application = { this.userTaskConfigFiles ++= configs; this }
+  def withConfigs(configs: String*): Application = { this.userTaskConfigFiles ++= configs; this }
   def configOverrides: Map[String, ConfigValue] = _configOverrides.toMap
   def overrideTask(taskName: String, definition: TaskDefinitionRef): Application = overrideAnyConfig("simplan.tasks.dag." + taskName, definition)
   def overrideTask(taskName: String, definition: AnyRef): Application = overrideAnyConfig("simplan.tasks.dag." + taskName, definition)
+  def startFromTask(taskName: String): Application = if (Option(taskName).isDefined) overrideAnyConfig("simplan.tasks.startingTask", taskName) else this
+  def startFromTask(taskName: Option[String]): Application = if (taskName.isDefined) overrideAnyConfig("simplan.tasks.startingTask", taskName.get) else this
 
   def overrideTasks(tasks: Map[String, AnyRef]): Application = {
     tasks.foreach { case (taskName, taskDefinition) => overrideAnyConfig(s"simplan.tasks.dag.$taskName", taskDefinition) }
