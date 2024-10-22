@@ -19,7 +19,7 @@ SONAR_HOST: https://sonarqube.tools-k8s.a.intuit.com/
 GITHUB_API: https://github.intuit.com/api/v3/
 
 enableJiraTransition: false
-
+sonarQubev9: true
 deploy_repo: github.intuit.com/Simplan/simplan-framework.git
 enableScorecardReadinessCheck: false
 environments:
