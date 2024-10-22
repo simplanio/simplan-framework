@@ -2,12 +2,14 @@ package com.intuit.data.simplan.common.emitters
 
 import com.intuit.data.simplan.common.config.{SimplanAppContextConfiguration, SimplanEmitterConfig}
 import com.intuit.data.simplan.common.utils.InitUtils
+import com.intuit.data.simplan.logging.Logging
 
-/**
-  * @author Abraham, Thomas - tabraham1
+/** @author Abraham, Thomas - tabraham1
   *         Created on 04-Aug-2022 at 10:38 AM
   */
-class SimplanEmitterRegistry(config: SimplanAppContextConfiguration) {
+class SimplanEmitterRegistry(config: SimplanAppContextConfiguration) extends Logging {
+
+  logger.info(s"Initializing SimplanEmitterRegistry with ${config.emitters.size} emitters: ${config.emitters.keys.mkString(",")}")
 
   private val emitters: Map[String, SimplanEmitter] = config.emitters.map {
     case (key: String, emitter: SimplanEmitterConfig) =>

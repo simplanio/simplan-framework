@@ -22,8 +22,10 @@ object InitUtils extends Logging {
         throw new SimplanConfigException(s"${cls.getCanonicalName} doesnt extend ${ct.runtimeClass.getClass.getCanonicalName}.")
       }
     val constructorCls: Array[Class[_]] = operatorClass.getConstructors.head.getParameters.map(_.getParameterizedType.getTypeName).map(Class.forName)
-    operatorClass.getConstructor(constructorCls.head).newInstance(constructorArgs)
-
+    logger.info(s"Trying to instantiate class ${operatorClass.getCanonicalName} with constructor types: " + constructorCls.mkString(","))
+    val instance = operatorClass.getConstructor(constructorCls.head).newInstance(constructorArgs)
+    logger.info(s"Instantiated class ${operatorClass.getCanonicalName} with constructor types: " + constructorCls.mkString(","))
+    instance
   }
 
   def instantiate[T](cls: Class[_], constructorArgs: List[AnyRef])(implicit ct: ClassTag[T]): T = {

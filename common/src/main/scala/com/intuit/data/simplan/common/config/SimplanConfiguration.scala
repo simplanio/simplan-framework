@@ -38,6 +38,7 @@ case class ApplicationConfig(
     orchestratorId: Option[String],
     source: String,
     namespace: String = "default",
+    configHome: String = System.getProperty("java.io.tmpdir"),
     runId: Option[String],
     parent: Option[String],
     region: Option[String],
