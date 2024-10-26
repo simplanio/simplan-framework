@@ -28,7 +28,7 @@ import com.intuit.data.simplan.logging.events.SimplanEvent
   * @author Abraham, Thomas - tabraham1
   *         Created on 19-Sep-2023 at 11:22 PM
   */
-abstract class OpsMetricHandler(val appContext: AppContext, val opsMetricsConfig:OpsMetricsConfig) {
+abstract class OpsMetricHandler(val appContext: AppContext, val opsMetricsConfig:OpsMetricsConfig) extends Serializable {
   protected def emit(metric: SimplanOpsEvent): Unit
 
   def trace(metric: SimplanEvent): Unit = emit(OpsEventFormatter.format(appContext, metric.toOpsEvent, EventLevel.TRACE))

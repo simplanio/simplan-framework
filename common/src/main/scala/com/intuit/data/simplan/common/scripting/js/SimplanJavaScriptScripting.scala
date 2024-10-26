@@ -25,22 +25,28 @@ import javax.script._
 /** @author Abraham, Thomas - tabraham1
   *         Created on 14-Feb-2023 at 3:34 PM
   */
-class SimplanJavaScriptScripting extends Serializable with Logging {
+
+case class JSFunctions(functionName: String, argList: List[String], functionBody: String) {
+  val functionSignature = s"""${functionName}(${argList.mkString(",")})"""
+
+  val functionDefinition: String =
+    s"""function $functionSignature{
+       |  $functionBody
+       |}""".stripMargin
+}
+
+class SimplanJavaScriptScripting(val jsFunctions: List[JSFunctions]) extends Serializable with Logging {
   @transient lazy val engine: ScriptEngine = getScriptEngine
   @transient lazy val invokableEngine: Invocable = engine.asInstanceOf[Invocable]
 
-  private def getScriptEngine: ScriptEngine = new ScriptEngineManager().getEngineByName("nashorn")
-
-  def registerJSFunction(functionName: String, argList: List[String], functionBody: String): Unit = {
-    val functionSignature = s"""${functionName}(${argList.mkString(",")})"""
-    val functionDefinition =
-      s"""function $functionSignature{
-         |  $functionBody
-         |}""".stripMargin
-
-    val compiledScript: CompiledScript = engine.asInstanceOf[Compilable].compile(functionDefinition)
-    compiledScript.eval()
-    logger.info(s"Registered Javascript Function to Engine $functionSignature")
+  private def getScriptEngine: ScriptEngine = {
+    val localEngine = new ScriptEngineManager().getEngineByName("nashorn")
+    jsFunctions.foreach(jsFunction => {
+      val compiledScript: CompiledScript = localEngine.asInstanceOf[Compilable].compile(jsFunction.functionDefinition)
+      compiledScript.eval()
+      logger.info(s"Registered Javascript Function to Engine ${jsFunction.functionSignature}")
+    })
+    localEngine
   }
 
   def evaluateBooleanExpression(functionName: String, args: AnyRef*): Boolean = {
@@ -52,7 +58,7 @@ class SimplanJavaScriptScripting extends Serializable with Logging {
   def evaluateExpression(functionName: String, args: AnyRef*): AnyRef = {
     try invokableEngine.invokeFunction(functionName, args: _*)
     catch {
-      case e: Exception => throw new SimplanScriptingException(e.getMessage + s" while trying to execute $functionName")
+      case e: Exception => throw new SimplanScriptingException(e.getMessage + s" while trying to execute $functionName",e)
     }
   }
 }
