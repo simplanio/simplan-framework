@@ -1,7 +1,7 @@
 package com.intuit.data.simplan.core.context
 
 import com.intuit.data.simplan.common.config.{OperatorDefinitionRef, TaskDefinitionRef}
-import com.intuit.data.simplan.common.files.FileUtils
+import com.intuit.data.simplan.common.files.{FileUtils, LocalFileUtils}
 import com.intuit.data.simplan.core.domain.OperatorType
 import com.intuit.data.simplan.global.json.{JacksonUtil, SimplanJsonMapper}
 import com.intuit.data.simplan.logging.Logging
@@ -11,10 +11,10 @@ import scala.collection.JavaConverters.asJavaIterableConverter
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
-/** @author - Abraham, Thomas - tabaraham1
+/** @author - Abraham, Thomas - tabaraham1qqqq
   *         Created on 8/19/21 at 1:08 AM
   */
-class InitContext(_userConfigs: Array[String] = Array.empty) extends Serializable with Logging {
+class InitContext(_userConfigs: Array[String] = Array.empty, val fileUtils: FileUtils = new LocalFileUtils()) extends Serializable with Logging {
   @transient private val _configOverrides = new mutable.HashMap[String, ConfigValue]
   private val _additionalUserConfigs: ListBuffer[String] = new mutable.ListBuffer[String]()
 

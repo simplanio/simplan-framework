@@ -5,6 +5,7 @@ import com.intuit.data.simplan.common.emitters.SimplanEmitter
 import com.intuit.data.simplan.common.exceptions.SimplanConfigException
 import com.intuit.data.simplan.logging.Logging
 
+import java.lang.reflect.Constructor
 import scala.reflect.ClassTag
 
 /** @author Abraham, Thomas - tabraham1
@@ -29,6 +30,7 @@ object InitUtils extends Logging {
   }
 
   def instantiate[T](cls: Class[_], constructorArgs: List[AnyRef])(implicit ct: ClassTag[T]): T = {
+    logger.info(s"Trying to instantiate class ${cls.getCanonicalName} with constructor types: " + constructorArgs.map(_.getClass.getCanonicalName).mkString(","))
     val operatorClass =
       if (ct.runtimeClass.isAssignableFrom(cls)) {
         cls.asInstanceOf[Class[_ <: T]]
@@ -36,7 +38,9 @@ object InitUtils extends Logging {
         throw new SimplanConfigException(s"${cls.getCanonicalName} doesnt extend ${ct.runtimeClass.getClass.getCanonicalName}.")
       }
     val constructorCls: Array[Class[_]] = operatorClass.getConstructors.head.getParameters.map(_.getParameterizedType.getTypeName).map(Class.forName)
-    val value = operatorClass.getConstructor(constructorCls.toArray: _*)
+    logger.info("constructor types: " + constructorCls.mkString(","))
+    val value: Constructor[_ <: T] = operatorClass.getConstructor(constructorCls.toArray: _*)
+    logger.info(s"Trying to instantiate class ${operatorClass.getCanonicalName} with constructor types: " + constructorCls.mkString(","))
     value.newInstance(constructorArgs: _*)
 
   }

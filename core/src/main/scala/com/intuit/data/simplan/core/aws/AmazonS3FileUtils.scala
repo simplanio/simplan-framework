@@ -173,7 +173,7 @@ object AmazonS3FileUtils extends Logging {
     new AmazonS3FileUtils(s3client)
   }
 
-  def create(arn: Option[String] = None, sessionPrefix: String = DEFAULT_SESSION_PREFIX, region: String = "US_WEST_2"): AmazonS3FileUtils = {
+  def create(arn: Option[String] = None, sessionPrefix: String = DEFAULT_SESSION_PREFIX, region: String = Regions.US_WEST_2.getName): AmazonS3FileUtils = {
     apply(arn, sessionPrefix, Regions.fromName(region))
   }
   def main(args: Array[String]): Unit = {

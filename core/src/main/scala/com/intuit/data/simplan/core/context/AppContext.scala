@@ -31,7 +31,8 @@ abstract class AppContext(initContext: InitContext) extends Support {
     .addDeserializer(classOf[AWSAuthType], new AWSAuthJacksonDeserializer)
     .addDeserializer(classOf[SinkConfig], new SinkJacksonDeSerializer)
   SimplanJsonMapper.registerModule(simplanModule)
-  lazy override val fileUtils: FileUtils = new LocalFileUtils
+
+  lazy override val fileUtils: FileUtils = initContext.fileUtils
 
   lazy val applicationId: String = appContextConfig.application.runId.get
 

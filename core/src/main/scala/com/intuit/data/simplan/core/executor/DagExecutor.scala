@@ -108,6 +108,7 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
   def instantiateOperator(appContext: Support, taskExecutionTracker: TaskExecutionTracker, taskDefinition: TaskDefinition, operatorType: OperatorType, operatorDefinition: OperatorDefinition): Operator = {
     try {
       val className = appContext.appContextConfig.application.operatorMappings.getOrElse(operatorDefinition.operator, operatorDefinition.operator)
+      logger.info(s"Instantiating Operator: $className")
       val cls = Class.forName(className)
       try {
         InitUtils.instantiate[Operator](
