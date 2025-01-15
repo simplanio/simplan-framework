@@ -22,6 +22,7 @@ import com.intuit.data.simplan.core.domain.OperatorType
 import com.intuit.data.simplan.global.json.SimplanJsonMapper
 
 import scala.reflect.ClassTag
+import scala.util.Try
 
 /** @author Abraham, Thomas - tabraham1
   *         Created on 09-Dec-2022 at 7:41 PM
@@ -34,5 +35,8 @@ case class OperatorContext(
     operatorDefinition: OperatorDefinition,
     appConfig: SimplanTasksConfiguration
 ) {
-  def parseConfigAs[T](implicit m: ClassTag[T]): T = SimplanJsonMapper.fromJson[T](operatorDefinition.config)
+  def parseConfigAs[T](implicit m: ClassTag[T]): T = Try(SimplanJsonMapper.fromJson[T](operatorDefinition.config)) match {
+    case scala.util.Success(value) => value
+    case scala.util.Failure(exception) => throw new RuntimeException(s"Failed to parse config for Task $taskName(Operator : '${operatorDefinition.operator}'): ${exception.getMessage}", exception)
+  }
 }
