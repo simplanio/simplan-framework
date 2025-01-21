@@ -105,7 +105,7 @@ class AmazonS3FileUtils(val s3Client: AmazonS3) extends FileUtils with Logging {
       }
       logger.info(s"Download Complete")
       transferManager.shutdownNow()
-      localPath + "/" + filePath
+      (localPath + "/" + filePath).replaceAllLiterally("//", "/")
     }
   }
 
