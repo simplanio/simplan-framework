@@ -8,6 +8,7 @@ import com.intuit.data.simplan.logging.utils.JacksonJsonMapper;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Abraham, Thomas - tabraham1
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 public class SimplanOpsEvent extends JacksonAnyProperty {
     public final Long metricVersion = 2L;
+    public String messageId;
     public String message;
     public String detailedMessage;
     @JsonProperty("@timestamp")
@@ -30,6 +32,7 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
     public ContextOpsEvent context;
 
     public SimplanOpsEvent() {
+        this.messageId = UUID.randomUUID().toString().replace("-", "");
         this.timestamp = Instant.now();
         this.setTags(null);
         this.setLabels(null);

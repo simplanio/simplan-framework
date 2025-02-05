@@ -20,14 +20,15 @@ package com.intuit.data.simplan.core.executor
 import com.intuit.data.simplan.common.config.{SimplanTasksConfiguration, TaskDefinition}
 import com.intuit.data.simplan.core.context.AppContext
 import com.intuit.data.simplan.core.domain.OperatorType
+import com.intuit.data.simplan.core.domain.operator.OperatorResponse
 import com.intuit.data.simplan.core.opsmetrics.trackers.TaskExecutionTracker
 
 import scala.util.control.Breaks.{break, breakable}
 import scala.util.{Failure, Success, Try}
 
 /** @author Abraham, Thomas - tabraham1
-  *         Created on 11-Apr-2023 at 11:39 AM
-  */
+ *          Created on 11-Apr-2023 at 11:39 AM
+ */
 class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfiguration) extends DagExecutor(appContext, dagConfig) {
 
   private def filterTaskOrderFromOperation(taskOrder: List[String], itemToFilter: String): List[String] = {
@@ -60,7 +61,7 @@ class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfi
                 logger.info(s"Operator $taskName canContinue is false. Skipping rest of the execution")
                 operatorResponse.throwable match {
                   case Some(value) => logger.warn(value.getMessage, value)
-                  case _           =>
+                  case _ =>
                 }
                 break
               }
@@ -76,12 +77,64 @@ class SequentialDagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfi
               break
             }
           } match {
-            case Success(_)         => taskExecutionTracker.success()
+            case Success(_) => taskExecutionTracker.success()
             case Failure(exception) => taskExecutionTracker.failed(s"Task Execution failed : ${exception.getMessage}", Some(exception)); throw exception
           }
       }
     }
     logger.info("Task Execution Complete")
     true
+  }
+
+  override def simulate[T <: Serializable](runParameters: T, taskName: String): Map[String, OperatorResponse] = {
+    val taskOrder = dagConfig.tasks.order.slice(0, dagConfig.tasks.order.indexOf(taskName) + 1)
+    val operatorResponses = new scala.collection.mutable.HashMap[String, OperatorResponse]()
+    val startingTask = if (dagConfig.tasks.startingTask != null) dagConfig.tasks.startingTask else None
+    val orderFilter = startingTask match {
+      case Some(value) =>
+        logger.info("Task filter applied : Starting from task : " + startingTask.get)
+        filterTaskOrderFromOperation(taskOrder, value)
+      case None => taskOrder
+    }
+    logger.info(s"Executing Finalized tasks: $orderFilter")
+    logger.info("Task Simulation Started")
+    breakable {
+      orderFilter.zipWithIndex.foreach {
+        case (taskName, index) =>
+          val taskExecutionTracker = TaskExecutionTracker(appContext, taskName, index)
+          Try {
+            taskExecutionTracker.inProgress()
+            val taskDefinition: TaskDefinition = dagConfig.tasks.dag(taskName)
+            val triggerResponse = processTriggerAndValidationOperator(taskDefinition.trigger, OperatorType.TRIGGER, taskDefinition, taskExecutionTracker)
+            if (triggerResponse) {
+              val operatorResponse = processActionOperator(taskDefinition.action, taskDefinition, taskExecutionTracker)
+              if (!operatorResponse.canContinue) {
+                logger.info(s"Operator $taskName canContinue is false. Skipping rest of the execution")
+                operatorResponse.throwable match {
+                  case Some(value) => logger.warn(value.getMessage, value)
+                  case _ =>
+                }
+                break
+              }
+              operatorResponses(taskName) = operatorResponse
+              val validationResponse = processTriggerAndValidationOperator(taskDefinition.validation, OperatorType.VALIDATION, taskDefinition, taskExecutionTracker)
+              if (!validationResponse) {
+                logger.info(s"Validation condition for $taskName failed. Skipping rest of the execution")
+                taskExecutionTracker.failed(s"Validation condition for $taskName failed. Skipping rest of the execution")
+                break
+              }
+            } else {
+              logger.info(s"Trigger condition for $taskName failed. Skipping rest of the execution")
+              taskExecutionTracker.failed(s"Trigger condition for $taskName failed. Skipping rest of the execution")
+              break
+            }
+          } match {
+            case Success(_) => taskExecutionTracker.success()
+            case Failure(exception) => taskExecutionTracker.failed(s"Task Simulation failed : ${exception.getMessage}", Some(exception)); throw exception
+          }
+      }
+    }
+    logger.info("Task Simulation Complete")
+    operatorResponses.toMap
   }
 }

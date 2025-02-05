@@ -31,13 +31,16 @@ import org.slf4j.{Logger, LoggerFactory}
 import scala.util.{Failure, Success, Try}
 
 /** @author Abraham, Thomas - tabraham1
-  *         Created on 11-Apr-2023 at 11:13 AM
-  */
+ *          Created on 11-Apr-2023 at 11:13 AM
+ */
 abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfiguration) extends Serializable {
   lazy val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   val operatorResponseManager: OperatorResponseManager = OperatorResponseManager.default
+
   def execute[T <: Serializable](runParameters: T): Boolean
+
+  def simulate[T <: Serializable](runParameters: T, taskName: String): Map[String, OperatorResponse]
 
   def processActionOperator(actionOperatorConfig: OperatorDefinition, taskConfig: TaskDefinition, taskExecutionTracker: TaskExecutionTracker): OperatorResponse = {
 
@@ -64,10 +67,10 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
   }
 
   def processTriggerAndValidationOperator(
-      operatorConfigOption: Option[OperatorDefinition],
-      operatorType: OperatorType,
-      taskConfig: TaskDefinition,
-      taskExecutionTracker: TaskExecutionTracker): Boolean = {
+                                           operatorConfigOption: Option[OperatorDefinition],
+                                           operatorType: OperatorType,
+                                           taskConfig: TaskDefinition,
+                                           taskExecutionTracker: TaskExecutionTracker): Boolean = {
     operatorConfigOption match {
       case Some(operatorConfig) =>
         val operatorExecution = OperationExecutionTracker(appContext, operatorConfig.operator, operatorType.toString, taskExecutionTracker)
@@ -95,12 +98,12 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
   }
 
   private def emitOperatorDefinition(
-      operatorType: OperatorType,
-      taskExecutionTracker: TaskExecutionTracker,
-      operatorConfig: OperatorDefinition,
-      operatorExecutionStatusEvent: OperatorExecutionStatusEvent): Unit = {
+                                      operatorType: OperatorType,
+                                      taskExecutionTracker: TaskExecutionTracker,
+                                      operatorConfig: OperatorDefinition,
+                                      operatorExecutionStatusEvent: OperatorExecutionStatusEvent): Unit = {
     Try(appContext.opsMetricsEmitter.info(new OperatorDefinitionEvent(operatorExecutionStatusEvent, operatorConfig, operatorType.toString, taskExecutionTracker.taskName))) match {
-      case Success(_)         => logger.info(s"Successfully emitted OperatorDefinitionEvent for Task ${taskExecutionTracker.taskName}($operatorType)")
+      case Success(_) => logger.info(s"Successfully emitted OperatorDefinitionEvent for Task ${taskExecutionTracker.taskName}($operatorType)")
       case Failure(exception) => logger.warn(s"Failed to emit OperatorDefinitionEvent for Task ${taskExecutionTracker.taskName}($operatorType)", exception)
     }
   }
