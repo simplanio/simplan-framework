@@ -15,8 +15,8 @@ import java.util.UUID;
  * Created on 26-May-2022 at 12:25 PM
  */
 public class SimplanOpsEvent extends JacksonAnyProperty {
-    public final Long metricVersion = 2L;
-    public String messageId;
+    public final String metricVersion = "1.1.0";
+    public String metricId;
     public String message;
     public String detailedMessage;
     @JsonProperty("@timestamp")
@@ -30,10 +30,15 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
     public Object eventData;
     public MetaOpsEvent meta;
     public ContextOpsEvent context;
+    public Instant processingTime;
+    public Instant dataTime;
 
     public SimplanOpsEvent() {
-        this.messageId = UUID.randomUUID().toString().replace("-", "");
-        this.timestamp = Instant.now();
+        this.metricId = "spid-" + UUID.randomUUID().toString().replace("-", "");
+        Instant now = Instant.now();
+        this.timestamp = now;
+        this.processingTime = now;
+        this.dataTime = now;
         this.setTags(null);
         this.setLabels(null);
     }
@@ -136,7 +141,7 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
         return this;
     }
 
-    public Long getMetricVersion() {
+    public String getMetricVersion() {
         return metricVersion;
     }
 
@@ -155,6 +160,33 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
 
     public SimplanOpsEvent setEventData(Object eventData) {
         this.eventData = eventData;
+        return this;
+    }
+
+    public String getMetricId() {
+        return metricId;
+    }
+
+    public SimplanOpsEvent setMetricId(String messageId) {
+        this.metricId = messageId;
+        return this;
+    }
+
+    public Instant getProcessingTime() {
+        return processingTime;
+    }
+
+    public SimplanOpsEvent setProcessingTime(Instant processingTime) {
+        this.processingTime = processingTime;
+        return this;
+    }
+
+    public Instant getDataTime() {
+        return dataTime;
+    }
+
+    public SimplanOpsEvent setDataTime(Instant dataTime) {
+        this.dataTime = dataTime;
         return this;
     }
 }
