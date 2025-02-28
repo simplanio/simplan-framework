@@ -1,6 +1,7 @@
 package com.intuit.data.simplan.logging.domain.v2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.intuit.data.simplan.logging.OpsMetricsConstants;
 import com.intuit.data.simplan.logging.domain.JacksonAnyProperty;
 import com.intuit.data.simplan.logging.domain.v2.fiedsets.*;
 import com.intuit.data.simplan.logging.utils.JacksonJsonMapper;
@@ -15,7 +16,7 @@ import java.util.UUID;
  * Created on 26-May-2022 at 12:25 PM
  */
 public class SimplanOpsEvent extends JacksonAnyProperty {
-    public final String metricVersion = "1.1.0";
+    public final String metricVersion = OpsMetricsConstants.METRIC_VERSION;
     public String metricId;
     public String message;
     public String detailedMessage;
