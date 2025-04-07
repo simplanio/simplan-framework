@@ -34,6 +34,7 @@ object OpsEventFormatter {
       context.setApplicationId(appContext.applicationId)
       context.setOrchestrator(appContext.appContextConfig.application.orchestrator)
       context.setApplicationId(appContext.appContextConfig.application.orchestratorId.orNull)
+      context.setInstanceId(appContext.appContextConfig.application.qualifiedInstanceId)
       opsEvent.setContext(context)
 
       val meta = Option(opsEvent.meta).getOrElse(new MetaOpsEvent())

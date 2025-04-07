@@ -7,3 +7,4 @@ jobs:
       - checkout
       - run: mvn clean install -T7
       - run: mvn test
+

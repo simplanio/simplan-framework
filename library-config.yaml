@@ -1,4 +1,4 @@
-artifactVersion: 0.5.1
+artifactVersion: 0.5.2
 
 asset_id: 2525411083940755299
 asset_alias: Intuit.simplan.simplanframework
@@ -15,11 +15,11 @@ githubCredentialsId: "github-svc-sbseg-ci"
 orgRepo: Simplan/simplan-framework
 
 CODECOV_CREDENTIALS: ibp-codecov-token
-SONAR_HOST: https://pub-sonarqube-ibp-prod-us-west-2-app.prod1-ibp.a.intuit.com/
+SONAR_HOST: https://sonarqube.tools-k8s.a.intuit.com/
 GITHUB_API: https://github.intuit.com/api/v3/
 
 enableJiraTransition: false
-
+sonarQubev9: true
 deploy_repo: github.intuit.com/Simplan/simplan-framework.git
 enableScorecardReadinessCheck: false
 environments:

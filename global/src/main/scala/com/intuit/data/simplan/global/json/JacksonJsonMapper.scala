@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.core.JsonGenerator.Feature
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
-import com.fasterxml.jackson.databind.{DeserializationFeature, JsonNode, MapperFeature, SerializationFeature}
+import com.fasterxml.jackson.databind.{DeserializationFeature, JsonNode, MapperFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.module.scala.{ClassTagExtensions, DefaultScalaModule}
 import com.intuit.data.simplan.global.domain.QualifiedParam
 import com.intuit.data.simplan.global.qualifiedstring.QualifiedParamJacksonDeserializer
@@ -25,19 +25,18 @@ class JacksonJsonMapper extends SimplanJsonMapper {
       .addDeserializer(classOf[QualifiedParam], new QualifiedParamJacksonDeserializer)
       .addDeserializer(classOf[Instant], new InstantDeSerializer)
       .addSerializer(classOf[Instant], new InstantSerializer)
-
-    JsonMapper.builder()
+    val mapper = new ObjectMapper() with ClassTagExtensions
+    mapper.registerModule(DefaultScalaModule)
+    mapper.registerModule(simplanModule)
       .configure(MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS, true)
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
       .configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true)
       .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-      .serializationInclusion(Include.NON_NULL)
-      .serializationInclusion(Include.NON_EMPTY)
-      .serializationInclusion(Include.NON_ABSENT)
+      .setSerializationInclusion(Include.NON_NULL)
+      .setSerializationInclusion(Include.NON_EMPTY)
+      .setSerializationInclusion(Include.NON_ABSENT)
       .configure(Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
-      .addModule(DefaultScalaModule)
-      .addModule(simplanModule)
-      .build() :: ClassTagExtensions
+    mapper
   }
 
   override def toJson(obj: AnyRef): String = objectMapper.writeValueAsString(obj)

@@ -1,0 +1,41 @@
+gitOrg: Simplan
+service_name: simplan-framework
+asset_id: 2525411083940755299
+asset_alias: Intuit.simplan.simplanframework
+#asset_alias: ${paws.service-asset-alias}
+#teamEmail: ${paws.teamEmail}
+#app_image: docker.intuit.com/simplan/replay-events-ingester/service/replay-events-ingester
+
+code_repo: github.intuit.com/Simplan/simplan-framework.git
+deploy_repo: github.intuit.com/Simplan/simplan-framework.git
+
+registry: docker.intuit.com
+repo: simplan/simplan-framework/service
+artifactoryurl: https://artifactory.a.intuit.com/artifactory
+
+# change this to false once ready for PRD
+preprodOnly: true
+
+enableBuildQualityMetrics: true
+enableDeployQualityMetrics: true
+
+# change this to true for enabling Jira stories to be transitioned
+enableJiraTransition: false
+# change this to true for enable Code Analysis stage
+SonarQubeAnalysis: false
+
+# change this to true for stop your pipeline in quality gate error
+SonarQubeEnforce: false
+
+# Cocoon
+enableCocoon: true
+cleanupCocoon: false
+cocoonBasic: dev/patterns/cocoon/service/basic
+
+environments:
+  e2e-usw2:
+    region: usw2
+    iks_type: ppd
+  prd-usw2:
+    region: usw2
+    iks_type: prd

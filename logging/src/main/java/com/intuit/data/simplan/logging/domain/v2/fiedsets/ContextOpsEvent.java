@@ -29,6 +29,11 @@ public class ContextOpsEvent extends JacksonAnyProperty {
      * Run id of the specific instance
      */
     String runId;
+
+    /**
+     * Run id of the specific instance
+     */
+    String instanceId;
     /**
      * This gives context for this specific event, Eg: taskName, applicationName Etc
      */
@@ -178,6 +183,15 @@ public class ContextOpsEvent extends JacksonAnyProperty {
 
     public ContextOpsEvent setApplicationId(String applicationId) {
         this.applicationId = applicationId;
+        return this;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public ContextOpsEvent setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
         return this;
     }
 }

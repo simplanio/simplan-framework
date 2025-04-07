@@ -23,17 +23,19 @@ import java.util
 import scala.collection.JavaConverters.mapAsScalaMapConverter
 
 /** @author Abraham, Thomas - tabraham1
-  *         Created on 09-Dec-2022 at 4:53 PM
-  */
+ *          Created on 09-Dec-2022 at 4:53 PM
+ */
 trait OperatorConfig extends Serializable {
 
   lazy val additionalProperties: Map[String, AnyRef] = _additionalProperties.asScala.toMap
 
   @JsonIgnore private val _additionalProperties: util.HashMap[String, AnyRef] = new util.HashMap[String, AnyRef]
+
   @JsonAnyGetter def getAdditionalProperties: util.Map[String, AnyRef] = this._additionalProperties
 
   @JsonAnySetter def setAdditionalProperty(name: String, value: AnyRef): OperatorConfig = {
     this._additionalProperties.put(name, value)
     this
   }
+
 }

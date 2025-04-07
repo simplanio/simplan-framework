@@ -1,6 +1,7 @@
 package com.intuit.data.simplan.logging.domain.v2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.intuit.data.simplan.logging.OpsMetricsConstants;
 import com.intuit.data.simplan.logging.domain.JacksonAnyProperty;
 import com.intuit.data.simplan.logging.domain.v2.fiedsets.*;
 import com.intuit.data.simplan.logging.utils.JacksonJsonMapper;
@@ -8,13 +9,15 @@ import com.intuit.data.simplan.logging.utils.JacksonJsonMapper;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Abraham, Thomas - tabraham1
  * Created on 26-May-2022 at 12:25 PM
  */
 public class SimplanOpsEvent extends JacksonAnyProperty {
-    public final Long metricVersion = 2L;
+    public final String metricVersion = OpsMetricsConstants.METRIC_VERSION;
+    public String metricId;
     public String message;
     public String detailedMessage;
     @JsonProperty("@timestamp")
@@ -28,9 +31,15 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
     public Object eventData;
     public MetaOpsEvent meta;
     public ContextOpsEvent context;
+    public Instant processingTime;
+    public Instant dataTime;
 
     public SimplanOpsEvent() {
-        this.timestamp = Instant.now();
+        this.metricId = "spid-" + UUID.randomUUID().toString().replace("-", "");
+        Instant now = Instant.now();
+        this.timestamp = now;
+        this.processingTime = now;
+        this.dataTime = now;
         this.setTags(null);
         this.setLabels(null);
     }
@@ -133,7 +142,7 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
         return this;
     }
 
-    public Long getMetricVersion() {
+    public String getMetricVersion() {
         return metricVersion;
     }
 
@@ -152,6 +161,33 @@ public class SimplanOpsEvent extends JacksonAnyProperty {
 
     public SimplanOpsEvent setEventData(Object eventData) {
         this.eventData = eventData;
+        return this;
+    }
+
+    public String getMetricId() {
+        return metricId;
+    }
+
+    public SimplanOpsEvent setMetricId(String messageId) {
+        this.metricId = messageId;
+        return this;
+    }
+
+    public Instant getProcessingTime() {
+        return processingTime;
+    }
+
+    public SimplanOpsEvent setProcessingTime(Instant processingTime) {
+        this.processingTime = processingTime;
+        return this;
+    }
+
+    public Instant getDataTime() {
+        return dataTime;
+    }
+
+    public SimplanOpsEvent setDataTime(Instant dataTime) {
+        this.dataTime = dataTime;
         return this;
     }
 }

@@ -1,7 +1,7 @@
 package com.intuit.data.simplan.core.context
 
 import com.intuit.data.simplan.common.config.{OperatorDefinitionRef, TaskDefinitionRef}
-import com.intuit.data.simplan.common.files.FileUtils
+import com.intuit.data.simplan.common.files.{FileUtils, LocalFileUtils}
 import com.intuit.data.simplan.core.domain.OperatorType
 import com.intuit.data.simplan.global.json.{JacksonUtil, SimplanJsonMapper}
 import com.intuit.data.simplan.logging.Logging
@@ -9,12 +9,21 @@ import com.typesafe.config.{ConfigValue, ConfigValueFactory}
 
 import scala.collection.JavaConverters.asJavaIterableConverter
 import scala.collection.mutable
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
-/** @author - Abraham, Thomas - tabaraham1
+/** @author - Abraham, Thomas - tabaraham1qqqq
   *         Created on 8/19/21 at 1:08 AM
   */
-class InitContext(val userConfigs: Array[String] = Array.empty) extends Serializable with Logging {
+class InitContext(_userConfigs: Array[String] = Array.empty, val fileUtils: FileUtils = new LocalFileUtils()) extends Serializable with Logging {
   @transient private val _configOverrides = new mutable.HashMap[String, ConfigValue]
+  private val _additionalUserConfigs: ListBuffer[String] = new mutable.ListBuffer[String]()
+
+  def userConfigs: Array[String] = _userConfigs ++ _additionalUserConfigs.toList
+
+  def addAdditionalUserConfig(config: String): InitContext = {
+    _additionalUserConfigs += config
+    this
+  }
 
   def configOverrides: Map[String, ConfigValue] = _configOverrides.toMap
   def overrideTask(taskName: String, definition: TaskDefinitionRef): InitContext = overrideAnyConfig("simplan.dag." + taskName, definition)
