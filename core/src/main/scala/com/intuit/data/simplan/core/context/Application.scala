@@ -34,8 +34,11 @@ class Application(val appContext: AppContext) extends Serializable with Logging 
   lazy private val (defaultFiles, userFiles) =
     if (resolvedTaskConfigFiles.isEmpty)
       (appContext.defaultAppContextConfigFiles, appContext.userAppContextConfigFiles)
-    else
-      (appContext.defaultAppContextConfigFiles ++ defaultTaskConfigFiles.toList, appContext.userAppContextConfigFiles ++ userTaskConfigFiles.toList)
+    else {
+      val defaultFiles = appContext.defaultAppContextConfigFiles ++ defaultTaskConfigFiles.toList
+      val userFiles = appContext.userAppContextConfigFiles.filter(userTaskConfigFiles.contains) ++ userTaskConfigFiles.toList
+      (defaultFiles, userFiles)
+    }
 
   lazy val taskConfigs: SimplanTasksConfiguration = {
     val loader = new TypesafeConfigLoader("simplan", defaultFiles, appContext.fileUtilsMap)
