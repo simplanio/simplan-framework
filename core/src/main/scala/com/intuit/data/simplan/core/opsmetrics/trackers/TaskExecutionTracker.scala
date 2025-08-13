@@ -5,6 +5,7 @@ import com.intuit.data.simplan.logging.MetricConstants
 import com.intuit.data.simplan.logging.events.TaskExecutionStatusEvent
 import org.apache.commons.lang.time.DurationFormatUtils
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.LoggerFactory
 
 import java.text.SimpleDateFormat
@@ -13,8 +14,8 @@ import java.util.TimeZone
 import scala.collection.mutable
 
 /** @author Abraham, Thomas - tabraham1
-  *         Created on 17-Feb-2022 at 6:32 PM
-  */
+ *          Created on 17-Feb-2022 at 6:32 PM
+ */
 case class TaskExecutionTracker(appContext: AppContext, taskName: String, taskIndex: Long) extends Serializable {
   private var startTime: Option[Instant] = None
   @transient lazy private val logger = LoggerFactory.getLogger(classOf[TaskExecutionTracker])
@@ -50,18 +51,16 @@ case class TaskExecutionTracker(appContext: AppContext, taskName: String, taskIn
   def failed(message: String = "Task execution failed", exception: Option[Throwable] = None): Unit = {
     val operationName =
       try {
-        // format is STEP-operationname_
         StringUtils.substringBetween(taskName, "STEP-", "_")
       } catch {
-        // parsing error
-        case ex: Exception => "UNKNOWN"
+        case _: Exception => "UNKNOWN"
       }
     val operation = s"${taskName}-${operationName}"
 
     if (exception.isEmpty)
       emitter.important(new TaskExecutionStatusEvent(message, taskName, taskIndex, MetricConstants.Status.FAILED, startTime, Some(Instant.now)))
     else {
-      val errors = s"{ operation=${operation}; exception=${exception.get.getMessage}}"
+      val errors = s"{ operation=${operation}; exception=${exception.get.getMessage} ; trace=${ExceptionUtils.getStackTrace(exception.get)} }"
       stepInfoFields += ("errors" -> s"[$errors]")
       emitter.important(new TaskExecutionStatusEvent(message, taskName, taskIndex, MetricConstants.Status.FAILED, startTime, Some(Instant.now)), exception.get)
     }
