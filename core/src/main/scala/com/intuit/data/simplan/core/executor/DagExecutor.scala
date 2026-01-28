@@ -91,7 +91,7 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
           case Failure(exception) => operatorExecution.failed(s"Operation Execution Failed : ${exception.getMessage}", exception); throw exception
         }
       case None => {
-        logger.info(s"Skipped: No $operatorType defined for ${taskExecutionTracker.taskName} - Retuning true")
+        logger.info(s"Skipped: No $operatorType defined for ${taskExecutionTracker.taskName} - Returning true")
         true
       }
     }
