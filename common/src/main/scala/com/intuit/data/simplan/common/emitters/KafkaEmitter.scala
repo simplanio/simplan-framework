@@ -14,7 +14,7 @@ import java.time.{LocalDateTime, ZoneId}
  *         Created on 04-Aug-2022 at 9:19 AM
  */
 
-case class KafkaEmitterConfig(producerConfig: Map[String, String], topic: Option[String], maxRetries: Integer, retryInterval: Long, isBlocking: Boolean=false) extends Serializable
+case class KafkaEmitterConfig(producerConfig: Map[String, String], topic: Option[String], maxRetries: Integer, retryInterval: Long, isBlocking: Boolean=true) extends Serializable
 
 class KafkaEmitter(emitterConfig: SimplanEmitterConfig) extends SimplanEmitter(emitterConfig) with Logging {
 
