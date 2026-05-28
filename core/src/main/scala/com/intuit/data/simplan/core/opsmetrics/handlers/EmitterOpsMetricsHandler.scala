@@ -26,7 +26,7 @@ import com.intuit.data.simplan.logging.domain.v2.fiedsets.EventLevel
 /** @author Abraham, Thomas - tabraham1
   *         Created on 19-Sep-2023 at 11:58 PM
   */
-class EmitterOpsMetricsHandler(appContext: AppContext, opsMetricsConfig: OpsMetricsConfig) extends OpsMetricHandler(appContext, opsMetricsConfig) with Logging {
+class EmitterOpsMetricsHandler(appContext: AppContext, opsMetricsConfig: OpsMetricsConfig) extends OpsMetricHandler(appContext, opsMetricsConfig) with Logging  {
 
   private val emitterName = opsMetricsConfig.resolvedConfig.getOrElse("emitterName", "opsMetrics")
   private val level = opsMetricsConfig.resolvedConfig.getOrElse("level", EventLevel.INFORMATIONAL.toString)

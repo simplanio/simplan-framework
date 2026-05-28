@@ -1,8 +1,11 @@
 package com.intuit.data.simplan.common.emitters
 
 import com.intuit.data.simplan.common.config.SimplanEmitterConfig
+import com.intuit.data.simplan.global.domain.QualifiedParam
 import com.intuit.data.simplan.global.json.SimplanJsonMapper
 import com.intuit.data.simplan.global.utils.SimplanImplicits.ToJsonImplicits
+
+import scala.util.Try
 
 /**
   * @author Abraham, Thomas - tabraham1
@@ -20,5 +23,10 @@ abstract class SimplanEmitter(emitterConfig: SimplanEmitterConfig) extends Seria
   def emitObject(target: String, message: AnyRef): Boolean = emitInternal(message.toJson, Option(target), None)
   def emitObject(target: String, key: String, message: AnyRef): Boolean = emitInternal(message.toJson, Option(target), Option(key))
 
-  protected def parseConfigAs[T](implicit m: Manifest[T]): T = SimplanJsonMapper.fromJson[T](emitterConfig.config)
+  private val qualifiedParamPattern = """\w+\([^)]+\)""".r
+
+  private def resolveQualifiedParams(json: String): String =
+    qualifiedParamPattern.replaceAllIn(json, m => Try(new QualifiedParam(m.matched).resolve).getOrElse(m.matched))
+
+  protected def parseConfigAs[T](implicit m: Manifest[T]): T = SimplanJsonMapper.fromJson[T](resolveQualifiedParams(emitterConfig.config))
 }
