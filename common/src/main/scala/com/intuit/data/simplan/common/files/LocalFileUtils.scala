@@ -1,7 +1,5 @@
 package com.intuit.data.simplan.common.files
 
-import org.apache.commons.io.FileUtils
-
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
@@ -11,7 +9,7 @@ import scala.util.{Failure, Success, Try}
 /** @author Abraham, Thomas - tabraham1
  *          Created on 15-Nov-2021 at 10:17 AM
  */
-class LocalFileUtils extends FileUtils {
+class LocalFileUtils extends org.apache.commons.io.FileUtils with FileUtils {
   override def readContent(path: String, charset: String = "UTF-8"): String = org.apache.commons.io.FileUtils.readFileToString(new File(path), charset)
 
   override def exists(path: String): Boolean = new File(path).exists()
@@ -20,7 +18,7 @@ class LocalFileUtils extends FileUtils {
     .map(each => FileListing(each.getAbsolutePath, each.length(), new Date(each.lastModified())))
     .toList
 
-  override def copy(sourcePath: String, destinationPath: String): Boolean = Try(FileUtils.copyDirectory(new File(sourcePath), new File(destinationPath))) match {
+  override def copy(sourcePath: String, destinationPath: String): Boolean = Try(org.apache.commons.io.FileUtils.copyDirectory(new File(sourcePath), new File(destinationPath))) match {
     case Success(_) => true
     case Failure(exception) => throw exception
   }

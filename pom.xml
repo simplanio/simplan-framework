@@ -25,7 +25,7 @@
     <properties>
         <revision>1.0.0-SNAPSHOT</revision>
 
-        <scala.version>2.12.12</scala.version>
+        <scala.version>2.12.18</scala.version>
         <scala.minor.version>2.12</scala.minor.version>
         <scala-parser-combinators.version>1.1.2</scala-parser-combinators.version>
 
@@ -33,7 +33,7 @@
 
         <slf4j.version>1.7.36</slf4j.version>
 
-        <pureconfig.version>0.9.0</pureconfig.version>
+        <pureconfig.version>0.17.4</pureconfig.version>
 
         <jackson.version>2.15.2</jackson.version>
 <!--        <jackson-module-caseclass.version>1.1.1</jackson-module-caseclass.version>-->
@@ -48,22 +48,22 @@
         <httpcomponents.version>4.5.14</httpcomponents.version>
 
 
-        <org.scalatest.version>3.0.4</org.scalatest.version>
+        <org.scalatest.version>3.2.15</org.scalatest.version>
         <junit-version>4.13.1</junit-version>
 
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <java.version>1.8</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
         <jacoco.enabled>true</jacoco.enabled>
-        <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.version>0.8.11</jacoco.version>
         <releasedeployrepo>https://artifactory.a.intuit.com/artifactory/maven.Simplan.simplan-releases
         </releasedeployrepo>
         <snapshotdeployrepo>https://artifactory.a.intuit.com/artifactory/maven.Simplan.simplan-snapshots
         </snapshotdeployrepo>
         <central.repo>https://artifact.intuit.com/artifactory/maven-proxy</central.repo>
         <encoding>UTF-8</encoding>
-        <scoverage.plugin.version>1.4.1</scoverage.plugin.version>
+        <scoverage.plugin.version>2.0.2</scoverage.plugin.version>
 
         <kafka-clients.version>3.2.3</kafka-clients.version>
     </properties>
@@ -126,7 +126,7 @@
             <dependency>
                 <groupId>com.github.scopt</groupId>
                 <artifactId>scopt_${scala.minor.version}</artifactId>
-                <version>3.7.1</version>
+                <version>4.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -164,6 +164,17 @@
             <dependency>
                 <groupId>com.github.pureconfig</groupId>
                 <artifactId>pureconfig_${scala.minor.version}</artifactId>
+                <version>${pureconfig.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pureconfig</groupId>
+                <artifactId>pureconfig-generic_${scala.minor.version}</artifactId>
                 <version>${pureconfig.version}</version>
                 <exclusions>
                     <exclusion>
@@ -271,6 +282,37 @@
     </repositories>
 
     <profiles>
+        <!-- Scala 2.12 is the default build. Adds the macro-paradise compiler arg only valid in 2.12. -->
+        <profile>
+            <id>scala-2.12</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.alchim31.maven</groupId>
+                        <artifactId>scala-maven-plugin</artifactId>
+                        <configuration>
+                            <args>
+                                <arg>-Xmacro-settings:materialize-derivations</arg>
+                            </args>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Scala 2.13 cross-build: override scala version and compatible dependency versions -->
+        <profile>
+            <id>scala-2.13</id>
+            <properties>
+                <scala.version>2.13.12</scala.version>
+                <scala.minor.version>2.13</scala.minor.version>
+                <scala-parser-combinators.version>1.1.2</scala-parser-combinators.version>
+            </properties>
+        </profile>
+
         <profile>
             <id>upload-artifact</id>
             <distributionManagement>
@@ -321,16 +363,16 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>4.8.1</version>
                 <configuration>
                     <scalaCompatVersion>${scala.minor.version}</scalaCompatVersion>
                     <scalaVersion>${scala.version}</scalaVersion>
-                    <args>
-                        <arg>-Xmacro-settings:materialize-derivations</arg>
-                    </args>
                     <jvmArgs>
                         <jvmArg>-Xms128m</jvmArg>
                         <jvmArg>-Xmx1024m</jvmArg>
+                        <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-opens=java.base/java.util=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-opens=java.base/sun.nio.ch=ALL-UNNAMED</jvmArg>
                     </jvmArgs>
                 </configuration>
                 <executions>
@@ -380,6 +422,7 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>
                     <filereports>WDF TestSuite.txt</filereports>
+                    <suffixes>Test|Spec|Suite</suffixes>
                 </configuration>
                 <executions>
                     <execution>
@@ -393,9 +436,9 @@
             <plugin>
                 <groupId>org.scoverage</groupId>
                 <artifactId>scoverage-maven-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>${scoverage.plugin.version}</version>
                 <configuration>
-                                        <scalaVersion>${scala.version}</scalaVersion>
+                    <scalaVersion>${scala.version}</scalaVersion>
                     <highlighting>true</highlighting>
                 </configuration>
             </plugin>

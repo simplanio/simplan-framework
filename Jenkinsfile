@@ -36,7 +36,7 @@ pipeline {
         spec:
           containers:
           - name: maven
-            image: 'docker.artifactory.a.intuit.com/maven:3.5.3-jdk-8'
+            image: 'docker.artifactory.a.intuit.com/maven:3.9.9-eclipse-temurin-21'
             tty: true
             command:
             - cat
@@ -60,7 +60,7 @@ pipeline {
               - name: shared-build-output
                 mountPath: /var/run/outputs
           - name: sonar-maven
-            image: 'docker.artifactory.a.intuit.com/maven:3.6.0-jdk-11'
+            image: 'docker.artifactory.a.intuit.com/maven:3.9.9-eclipse-temurin-21'
             command:
                 - cat
             tty: true
@@ -124,6 +124,7 @@ pipeline {
       }
       steps {
         mavenBuildPR("-U -B -s settings.xml")
+        mavenBuildPR("-P scala-2.13 -U -B -s settings.xml")
       }
       post {
         success {
@@ -167,6 +168,7 @@ pipeline {
 		          printf 'simplan.system.ci.framework.version=${revisionNo}\nsimplan.system.ci.framework.commitHash=${commitId}' > global/src/main/resources/simplan-framework-manifest.conf
 		        """
 		        mavenBuildCI("-P upload-artifact -Drevision=${revisionNo} -U -B -s settings.xml")
+		        mavenBuildCI("-P upload-artifact,scala-2.13 -Drevision=${revisionNo} -U -B -s settings.xml")
 		      //  gitTag(revisionNo, env.GIT_URL)
 		      }
 		      post {
