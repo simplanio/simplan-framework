@@ -106,7 +106,7 @@ pipeline {
     stage ('INIT DEFINITIONS'){
       steps {
         script {
-          config = readConfigYAML()
+          config = readConfigYAML() + [code_repo: env.GIT_URL, deploy_repo: env.GIT_URL]
           commitId = sh(script: 'git rev-parse HEAD',returnStdout: true)
           revisionNo = ('Imain' == env.BRANCH_NAME) ? config.artifactVersion+'.'+env.BUILD_NUMBER : "1.0.0${versionSuffix}"
           slackReleaseMessage = "*RELEASE* v<${env.RUN_DISPLAY_URL}|${revisionNo}>\n"
