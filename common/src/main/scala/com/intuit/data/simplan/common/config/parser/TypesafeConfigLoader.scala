@@ -12,6 +12,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 import pureconfig._
 import pureconfig.error.ConfigReaderFailures
+import pureconfig.generic.ProductHint
+import pureconfig.generic.auto._
 
 import java.io.File
 import java.net.URI
@@ -95,7 +97,7 @@ object TypesafeConfigLoader extends Logging {
   def resolveSystemConfiguration(parser: TypesafeConfigLoader): SimplanAppContextConfiguration = {
     logger.info("Resolving AppContext Configs")
     val config = parser.resolveConfig()
-    val configuration = pureconfig.loadConfig[SimplanAppContextConfiguration](config.getConfig(parser.namespace)) match {
+    val configuration = ConfigSource.fromConfig(config.getConfig(parser.namespace)).load[SimplanAppContextConfiguration] match {
       case Right(renderedConfig: SimplanAppContextConfiguration) => renderedConfig
       case Left(failures: ConfigReaderFailures) => throw new SimplanConfigException(failures.toString)
     }
@@ -107,7 +109,7 @@ object TypesafeConfigLoader extends Logging {
   def resolveTaskConfiguration(parser: TypesafeConfigLoader): SimplanTasksConfiguration = {
     logger.info("Resolving Application Dag Configs")
     val config = parser.resolveConfig()
-    val configuration = pureconfig.loadConfig[SimplanTasksConfiguration](config.getConfig(parser.namespace)) match {
+    val configuration = ConfigSource.fromConfig(config.getConfig(parser.namespace)).load[SimplanTasksConfiguration] match {
       case Right(renderedConfig: SimplanTasksConfiguration) => renderedConfig
       case Left(failures: ConfigReaderFailures) => throw new SimplanConfigException(failures.toString)
     }

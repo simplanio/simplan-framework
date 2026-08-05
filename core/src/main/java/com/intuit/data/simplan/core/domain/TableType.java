@@ -1,6 +1,6 @@
 package com.intuit.data.simplan.core.domain;
 
-import scala.Serializable;
+import java.io.Serializable;
 
 /**
  * @author Abraham, Thomas - tabraham1

@@ -5,7 +5,7 @@ asset_alias: Intuit.simplan.simplanframework
 
 mavenSettingsFileId: ibp-maven-settings-file
 artifactoryCredentialsId: artifactory-simplan-framework
-mavenImage: "maven:3.5.3-jdk-8"
+mavenImage: "maven:3.9.9-eclipse-temurin-21"
 MAIN_BRANCH: "master"
 groupId: com.intuit.Simplan.simplan-framework
 artifactId: simplan-framework

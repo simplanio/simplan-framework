@@ -30,6 +30,10 @@
             <artifactId>pureconfig_${scala.minor.version}</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.pureconfig</groupId>
+            <artifactId>pureconfig-generic_${scala.minor.version}</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
         </dependency>
