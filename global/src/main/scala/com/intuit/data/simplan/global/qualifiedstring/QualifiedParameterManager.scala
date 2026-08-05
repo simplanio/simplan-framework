@@ -11,6 +11,7 @@ object QualifiedParameterManager {
   private val qualifiedParamHandlers = new scala.collection.mutable.HashMap[String, QualifiedParamHandler[_]]()
 
   registerHandler(new RawQualifiedString)
+  registerHandler(new FileQualifiedStringHandler)
 
   def registerHandler(handler: QualifiedParamHandler[_]): Unit = qualifiedParamHandlers ++= List(handler.qualifier.toUpperCase -> handler)
 

@@ -85,15 +85,14 @@ abstract class DagExecutor(appContext: AppContext, dagConfig: SimplanTasksConfig
           response.canContinue
         } match {
           case Success(canContinue) =>
-            logger.info(s"Completed Executing ${taskExecutionTracker.taskName}($operatorType) - Result ${canContinue}")
-            operatorExecution.success();
+            logger.info(s"Completed Executing ${taskExecutionTracker.taskName}($operatorType) - Result $canContinue")
+            operatorExecution.success()
             canContinue
           case Failure(exception) => operatorExecution.failed(s"Operation Execution Failed : ${exception.getMessage}", exception); throw exception
         }
-      case None => {
-        logger.info(s"Skipped: No $operatorType defined for ${taskExecutionTracker.taskName} - Retuning true")
+      case None =>
+        logger.info(s"Skipped: No $operatorType defined for ${taskExecutionTracker.taskName} - Returning true")
         true
-      }
     }
   }
 
