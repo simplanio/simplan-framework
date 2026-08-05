@@ -15,6 +15,7 @@ import pureconfig.error.ConfigReaderFailures
 import pureconfig.generic.ProductHint
 import pureconfig.generic.auto._
 
+
 import java.io.File
 import java.net.URI
 import scala.annotation.tailrec
@@ -93,6 +94,13 @@ object TypesafeConfigLoader extends Logging {
   def apply(namespace: String, defaultFile: String, fileUtilsMap: Map[String, FileUtils]) = new TypesafeConfigLoader(namespace: String, List(defaultFile), fileUtilsMap)
 
   implicit def hint[T]: ProductHint[T] = ProductHint[T](ConfigFieldMapping(CamelCase, CamelCase))
+
+  implicit val stringOrRenderedReader: ConfigReader[String] = ConfigReader.fromCursor { cursor =>
+    cursor.asString.fold(
+      _ => Right(cursor.valueOpt.fold("{}")(_.render(ConfigRenderOptions.concise()))),
+      s => Right(s)
+    )
+  }
 
   def resolveSystemConfiguration(parser: TypesafeConfigLoader): SimplanAppContextConfiguration = {
     logger.info("Resolving AppContext Configs")
