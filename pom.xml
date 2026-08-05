@@ -27,6 +27,7 @@
 
         <scala.version>2.12.18</scala.version>
         <scala.minor.version>2.12</scala.minor.version>
+        <scala.suffix>_2.12</scala.suffix>
         <scala-parser-combinators.version>1.1.2</scala-parser-combinators.version>
 
         <aws-java-sdk.version>1.12.184</aws-java-sdk.version>
@@ -309,6 +310,7 @@
             <properties>
                 <scala.version>2.13.12</scala.version>
                 <scala.minor.version>2.13</scala.minor.version>
+                <scala.suffix>_2.13</scala.suffix>
                 <scala-parser-combinators.version>1.1.2</scala-parser-combinators.version>
             </properties>
         </profile>
@@ -338,7 +340,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>1.6.0</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>bom</flattenMode>
