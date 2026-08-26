@@ -14,7 +14,6 @@ class FileQualifiedStringHandler extends QualifiedStringHandler {
   override def resolve(qualifiedString: QualifiedParam): String = {
     val path = Paths.get(qualifiedString.string.trim)
     try {
-      println("path read ==>", new String(Files.readAllBytes(path), UTF_8).trim)
       new String(Files.readAllBytes(path), UTF_8).trim
     } catch {
       case ex: IOException =>
